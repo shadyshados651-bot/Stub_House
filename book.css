@@ -1,0 +1,327 @@
+/* ==========================================================
+   book.css — styles for the booking page (book.html) only.
+   Base look (colors, fonts, buttons, seats, forms) comes from
+   style.css, which is loaded first.
+   ========================================================== */
+
+[hidden] { display: none !important; }
+
+/* ---------- Progress steps ---------- */
+.bk-steps {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.bk-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.45;
+  transition: opacity var(--transition-speed);
+}
+
+.bk-steps li.active,
+.bk-steps li.done { opacity: 1; }
+
+.bk-step-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.bk-steps li.active .bk-step-num {
+  background: var(--marquee);
+  border-color: var(--marquee);
+  color: var(--paper);
+}
+
+.bk-steps li.done .bk-step-num {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+/* ---------- Step panels ---------- */
+.bk-panel { display: none; }
+.bk-panel.active { display: block; }
+
+.bk-film-info {
+  margin-top: var(--spacing-sm);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--paper);
+  opacity: 0.8;
+}
+
+.bk-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-lg);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover { background: var(--marquee); transform: none; }
+
+/* Outline buttons that sit on the dark checkout panel */
+.booking-panel .btn-outline {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+
+.booking-panel .btn-outline:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---------- Snack cards ---------- */
+.snack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  max-width: 900px;
+  margin: 0 auto var(--spacing-lg);
+}
+
+.snack-card {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.snack-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, var(--ink-soft), #3a312d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.snack-photo-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+.snack-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.snack-body {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.snack-body h3 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.snack-card .form-group label { color: #cfc7bb; }
+
+.snack-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--spacing-sm) 0 var(--spacing-md);
+}
+
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid rgba(246,241,228,0.25);
+  border-radius: var(--radius);
+}
+
+.qty-btn {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: none;
+  color: var(--paper);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background var(--transition-speed);
+}
+
+.qty-btn:hover { background: rgba(246,241,228,0.12); }
+
+.qty-value {
+  min-width: 34px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.snack-line-price {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+
+.snack-add { width: 100%; margin-top: auto; }
+
+/* ---------- Snack cart ---------- */
+.snack-cart {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius);
+}
+
+.snack-cart .stub-label { margin-bottom: var(--spacing-sm); }
+
+.snack-cart-list { list-style: none; }
+
+.snack-cart-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.snack-cart-list li:last-child { border-bottom: none; }
+
+.snack-cart-list .cart-empty {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.cart-line-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.cart-remove {
+  background: none;
+  border: none;
+  color: var(--marquee);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.cart-remove:hover { text-decoration: underline; }
+
+/* ---------- Checkout ---------- */
+.bk-checkout-title {
+  font-size: 2.2rem;
+  color: var(--paper);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.order-lines {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.order-line {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: 10px 0;
+  border-bottom: 2px dashed rgba(246,241,228,0.2);
+}
+
+.order-line .stub-label { margin-bottom: 2px; }
+.order-line-value { font-family: var(--font-mono); text-align: right; }
+
+.order-total {
+  max-width: 520px;
+  margin: var(--spacing-md) auto var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  color: var(--gold);
+}
+
+.auth-notice {
+  max-width: 520px;
+  margin: 0 auto var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.auth-notice p { flex: 1 1 240px; font-size: 0.92rem; }
+
+.signed-in-note {
+  max-width: 520px;
+  margin: 0 auto var(--spacing-lg);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--gold);
+  text-align: center;
+}
+
+/* ---------- CSS-Only Payment Form Toggle ---------- */
+.visa-fields {
+  display: none;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.payment-row:has(input[value="visa"]:checked) .visa-fields {
+  display: grid;
+}
+
+.visa-fields .form-group label { color: #cfc7bb; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .bk-steps { gap: var(--spacing-md); }
+  .bk-step-name { display: none; }
+  .bk-steps li.active .bk-step-name { display: inline; }
+  .snack-grid { grid-template-columns: 1fr; }
+  .booking-panel { padding: var(--spacing-lg) var(--spacing-md); }
+  .bk-nav-row .btn { flex: 1; text-align: center; }
+}
