@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="StubHouse cinema — Heliopolis, Cairo. Pick your seat, grab your stub, walk straight in. Now showing: Interstellar, 12 Angry Men, Turab El Mas and Ibrahim El Abyad.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self'; base-uri 'self';">
 <title>StubHouse — Book Your Show</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,13 +18,13 @@
   <div class="container">
     <a href="index.html" class="brand"><span>Stub</span>House</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-     
+      <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html#hero">Home</a></li>
       <li><a href="index.html#showing">Now Showing</a></li>
       <li class="has-dropdown" id="ticketsDropdown">
-        <a href="javascript:void(0)">Tickets</a>
+        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true">Tickets</button>
         <ul class="dropdown">
           <li><a href="book.html">Book Seats</a></li>
           <li><a href="movies.html">Full Schedule</a></li>
@@ -53,21 +59,21 @@
       <div class="stub-row">
         <div>
           <span class="stub-label">Feature</span>
-          <span class="stub-value">Interstellar</span>
+          <span class="stub-value" id="stubFilm">Interstellar</span>
         </div>
         <div>
           <span class="stub-label">Screen</span>
-          <span class="stub-value">04</span>
+          <span class="stub-value" id="stubScreen">04</span>
         </div>
       </div>
       <div class="stub-row">
         <div>
           <span class="stub-label">Date</span>
-          <span class="stub-value">Fri, 8:45 PM</span>
+          <span class="stub-value" id="stubDate">Fri, 8:45 PM</span>
         </div>
         <div>
           <span class="stub-label">Seat</span>
-          <span class="stub-value">G-12</span>
+          <span class="stub-value" id="stubSeat">G-12</span>
         </div>
       </div>
       <div class="stub-row">
@@ -77,7 +83,7 @@
         </div>
         <div>
           <span class="stub-label">Price</span>
-          <span class="stub-value">$14.00</span>
+          <span class="stub-value" id="stubPrice">—</span>
         </div>
       </div>
       <div class="stub-barcode"></div>
@@ -96,19 +102,35 @@
     <div class="slider-wrap">
       <div class="slides" id="slides">
         <div class="slide active">
-          <img src="images/interstellar.jpg" alt="Interstellar poster" onerror="this.style.background='#e8412c'">
+          <picture>
+            <source srcset="images/interstellar-300w.webp 300w, images/interstellar-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/interstellar-300w.jpg 300w, images/interstellar-600w.jpg 600w" sizes="300w">
+            <img src="images/interstellar-600w.jpg" width="576" height="900" alt="Interstellar poster" loading="lazy">
+          </picture>
           <div class="slide-caption"><h3>Interstellar</h3><p>Sci-Fi · 2h 49m · Screen 04</p></div>
         </div>
         <div class="slide">
-          <img src="images/12angrymen.jpg" alt="12 Angry Men poster" onerror="this.style.background='#2f6f4e'">
+          <picture>
+            <source srcset="images/12angrymen-300w.webp 300w, images/12angrymen-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/12angrymen-300w.jpg 300w, images/12angrymen-600w.jpg 600w" sizes="300w">
+            <img src="images/12angrymen-600w.jpg" width="589" height="900" alt="12 Angry Men poster" loading="lazy">
+          </picture>
           <div class="slide-caption"><h3>12 Angry Men</h3><p>Drama · 1h 36m · Screen 02</p></div>
         </div>
         <div class="slide">
-          <img src="images/turab-el-mas.jpg" alt="Turab El Mas poster" onerror="this.style.background='#d4a24e'">
+          <picture>
+            <source srcset="images/turab-el-mas-300w.webp 300w, images/turab-el-mas-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/turab-el-mas-300w.jpg 300w, images/turab-el-mas-600w.jpg 600w" sizes="300w">
+            <img src="images/turab-el-mas-600w.jpg" width="315" height="420" alt="Turab El Mas poster" loading="lazy">
+          </picture>
           <div class="slide-caption"><h3>Turab El Mas</h3><p>Drama · 2h 05m · Screen 07</p></div>
         </div>
         <div class="slide">
-          <img src="images/ibrahim-el-abyad.jpg" alt="Ibrahim El Abyad poster" onerror="this.style.background='#8a1f1f'">
+          <picture>
+            <source srcset="images/ibrahim-el-abyad-300w.webp 300w, images/ibrahim-el-abyad-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/ibrahim-el-abyad-300w.jpg 300w, images/ibrahim-el-abyad-600w.jpg 600w" sizes="300w">
+            <img src="images/ibrahim-el-abyad-600w.jpg" width="283" height="413" alt="Ibrahim El Abyad poster" loading="lazy">
+          </picture>
           <div class="slide-caption"><h3>Ibrahim El Abyad</h3><p>Action · 2h 10m · Screen 01</p></div>
         </div>
       </div>
@@ -128,12 +150,12 @@
       <div class="info-col">
         <span class="info-num">01</span>
         <h3>Pick a show</h3>
-        <p>Browse this week's films and events, filtered by day, time, and screen.</p>
+        <p>Browse this week's films and pick a showtime.</p>
       </div>
       <div class="info-col">
         <span class="info-num">02</span>
         <h3>Choose your seat</h3>
-        <p>Tap the seat map to hold your spot — taken seats are grayed out in real time.</p>
+        <p>Tap the seat map to hold your spot.</p>
       </div>
       <div class="info-col">
         <span class="info-num">03</span>
@@ -180,7 +202,13 @@
     <p class="section-sub">Four titles currently booking seats — pick one to open its seat map below.</p>
     <div class="movie-grid">
       <div class="movie-card">
-        <div class="movie-poster"><img src="images/interstellar.jpg" alt="Interstellar poster" onerror="this.remove()"></div>
+        <div class="movie-poster">
+          <picture>
+            <source srcset="images/interstellar-300w.webp 300w, images/interstellar-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/interstellar-300w.jpg 300w, images/interstellar-600w.jpg 600w" sizes="300w">
+            <img src="images/interstellar-600w.jpg" width="576" height="900" alt="Interstellar poster" loading="lazy">
+          </picture>
+        </div>
         <div class="movie-body">
           <h3>Interstellar</h3>
           <div class="movie-meta">SCI-FI · 2H 49M</div>
@@ -193,7 +221,13 @@
         </div>
       </div>
       <div class="movie-card">
-        <div class="movie-poster"><img src="images/12angrymen.jpg" alt="12 Angry Men poster" onerror="this.remove()"></div>
+        <div class="movie-poster">
+          <picture>
+            <source srcset="images/12angrymen-300w.webp 300w, images/12angrymen-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/12angrymen-300w.jpg 300w, images/12angrymen-600w.jpg 600w" sizes="300w">
+            <img src="images/12angrymen-600w.jpg" width="589" height="900" alt="12 Angry Men poster" loading="lazy">
+          </picture>
+        </div>
         <div class="movie-body">
           <h3>12 Angry Men</h3>
           <div class="movie-meta">DRAMA · 1H 36M</div>
@@ -206,7 +240,13 @@
         </div>
       </div>
       <div class="movie-card">
-        <div class="movie-poster"><img src="images/turab-el-mas.jpg" alt="Turab El Mas poster" onerror="this.remove()"></div>
+        <div class="movie-poster">
+          <picture>
+            <source srcset="images/turab-el-mas-300w.webp 300w, images/turab-el-mas-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/turab-el-mas-300w.jpg 300w, images/turab-el-mas-600w.jpg 600w" sizes="300w">
+            <img src="images/turab-el-mas-600w.jpg" width="315" height="420" alt="Turab El Mas poster" loading="lazy">
+          </picture>
+        </div>
         <div class="movie-body">
           <h3>Turab El Mas</h3>
           <div class="movie-meta">DRAMA · 2H 5M</div>
@@ -219,7 +259,13 @@
         </div>
       </div>
       <div class="movie-card">
-        <div class="movie-poster"><img src="images/ibrahim-el-abyad.jpg" alt="Ibrahim El Abyad poster" onerror="this.remove()"></div>
+        <div class="movie-poster">
+          <picture>
+            <source srcset="images/ibrahim-el-abyad-300w.webp 300w, images/ibrahim-el-abyad-600w.webp 600w" type="image/webp" sizes="300w">
+            <source srcset="images/ibrahim-el-abyad-300w.jpg 300w, images/ibrahim-el-abyad-600w.jpg 600w" sizes="300w">
+            <img src="images/ibrahim-el-abyad-600w.jpg" width="283" height="413" alt="Ibrahim El Abyad poster" loading="lazy">
+          </picture>
+        </div>
         <div class="movie-body">
           <h3>Ibrahim El Abyad</h3>
           <div class="movie-meta">ACTION · 2H 10M</div>
@@ -317,9 +363,8 @@
         <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
         <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
         <div class="footer-socials">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="GitHub">GH</a>
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
         </div>
       </div>
       <div>
@@ -349,12 +394,12 @@
     </div>
     <div class="footer-bottom">
       <span id="footerYear"></span>
-      <span>Built with vanilla HTML, CSS &amp; JS</span>
     </div>
   </div>
 </footer>
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
+<script src="js/seed.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

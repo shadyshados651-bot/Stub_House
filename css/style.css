@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-
 :root {
+  --focus: #f6b93b;
   --ink: #161312;
   --ink-soft: #2b2523;
   --marquee: #e8412c;
@@ -99,6 +98,17 @@ h1, h2, h3, .display {
   color: var(--ink-soft);
   max-width: 560px;
   margin: 0 auto var(--spacing-lg);
+}
+
+/* Visible keyboard focus for every interactive element (WCAG 2.1 AA) */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Keep anchored section titles visible under the fixed navbar */
+#hero, #showing, #about, #contact, #booking {
+  scroll-margin-top: calc(var(--header-height) + 16px);
 }
 
 /* ============ NAVBAR (fixed) ============ */
@@ -485,7 +495,7 @@ h1, h2, h3, .display {
 }
 
 .info-content h2 {
-  font-family: 'Pacifico', cursive;
+  font-family: var(--font-display);
   color: var(--gold);
   text-align: center;
   font-size: 2.6rem;
@@ -521,8 +531,6 @@ h1, h2, h3, .display {
 .info-col h3 { font-size: 1.6rem; margin: var(--spacing-sm) 0; }
 
 .info-col p { font-size: 0.95rem; color: var(--ink-soft); }
-
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 /* ============ ABOUT / SKILLS ============ */
 .about-grid {

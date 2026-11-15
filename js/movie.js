@@ -1,90 +1,10 @@
-/* Movie detail page. Needs script.js loaded first (STUBHOUSE_FILMS, STUBHOUSE_SEAT_COUNT).
-   Usage: movie.html?film=interstellar  (keys match STUBHOUSE_FILMS / book.html?film=) */
-
-var STUBHOUSE_MOVIE_INFO = {
-  interstellar: {
-    poster: 'images/interstellar.jpg',
-    genre: 'Sci-Fi',
-    year: 2014,
-    runtime: '2h 49m',
-    rating: 'PG-13',
-    director: 'Christopher Nolan',
-    writer: 'Jonathan Nolan, Christopher Nolan',
-    language: 'English',
-    synopsis: 'With Earth running out of food and time, a former pilot joins a crew of explorers who travel through a wormhole near Saturn in search of a new home for humanity. Every minute they spend out there costs the people they left behind years.',
-    cast: [
-      { name: 'Matthew McConaughey', role: 'Cooper' },
-      { name: 'Anne Hathaway', role: 'Brand' },
-      { name: 'Jessica Chastain', role: 'Murph' },
-      { name: 'Michael Caine', role: 'Professor Brand' },
-      { name: 'Matt Damon', role: 'Dr. Mann' },
-      { name: 'Casey Affleck', role: 'Tom' }
-    ],
-    trailerId: '3WzHXI5HizQ'   // YouTube video ID (the part after watch?v=)
-  },
-  '12angrymen': {
-    poster: 'images/12angrymen.jpg',
-    genre: 'Drama',
-    year: 1957,
-    runtime: '1h 36m',
-    rating: 'PG',
-    director: 'Sidney Lumet',
-    writer: 'Reginald Rose',
-    language: 'English',
-    synopsis: 'Twelve jurors lock themselves in a sweltering room to decide the fate of a teenager accused of murder. One man refuses to vote guilty without a proper discussion, and slowly the certainty of the others begins to crack.',
-    cast: [
-      { name: 'Henry Fonda', role: 'Juror 8' },
-      { name: 'Lee J. Cobb', role: 'Juror 3' },
-      { name: 'Ed Begley', role: 'Juror 10' },
-      { name: 'E.G. Marshall', role: 'Juror 4' },
-      { name: 'Jack Warden', role: 'Juror 7' },
-      { name: 'Martin Balsam', role: 'Juror 1' }
-    ],
-    trailerId: 'TEN-2uTi2c0'
-  },
-  turabelmas: {
-    poster: 'images/turab-el-mas.jpg',
-    genre: 'Drama',
-    year: 2018,
-    runtime: '2h 5m',
-    rating: 'PG-13',
-    director: 'Marwan Hamed',
-    writer: 'Ahmed Mourad (novel and screenplay)',
-    language: 'Arabic',
-    synopsis: 'Taha, a quiet pharmacy worker, comes home to find his father murdered. Reading the diaries his father left behind, he uncovers dark secrets that pull him into a world of crime and corruption he never knew existed.',
-    cast: [
-      { name: 'Asser Yassin', role: 'Taha el-Zahhar' },
-      { name: 'Menna Shalaby', role: 'Lead' },
-      { name: 'Maged El Kedwany', role: 'El-Sirvis' },
-      { name: 'Ezzat El Alaili', role: 'Hanafi el-Zahhar' },
-      { name: 'Khaled El Sawy', role: 'Supporting' },
-      { name: 'Sawsan Badr', role: 'Supporting' }
-    ],
-    trailerId: '9cO54cwkN1I'
-  },
-  ibrahimelabyad: {
-    poster: 'images/ibrahim-el-abyad.jpg',
-    genre: 'Action',
-    year: 2009,
-    runtime: '2h 10m',
-    rating: 'R',
-    director: 'Marwan Hamed',
-    writer: 'Abbas Abo El Hassan',
-    language: 'Arabic',
-    synopsis: 'Ibrahim watches his father get killed as a child and is pulled into the criminal underworld of Cairo. As he rises through the gangs, he crosses paths with the feared crime lord Abdul-Malek Zarzur, and a love triangle turns old loyalties into a fight to the death.',
-    cast: [
-      { name: 'Ahmed El Sakka', role: 'Ibrahim' },
-      { name: 'Hend Sabry', role: 'Horeya' },
-      { name: 'Amr Waked', role: 'Ashry' },
-      { name: 'Mahmoud Abdel Aziz', role: 'Abdul-Malek Zarzur' },
-      { name: 'Bassem Samra', role: 'Mahdy' },
-      { name: 'Sawsan Badr', role: "Horeya's Mother" }
-    ],
-    trailerId: 'cAqdap-Bvfk'
-  }
-};
+/* Movie detail page. Needs js/seed.js and js/script.js loaded first
+   (STUBHOUSE_FILMS, STUBHOUSE_MOVIE_INFO, stubhouseApi).
+   Usage: movie.html?film=interstellar  (#trailer opens the modal)
+*/
 
 document.addEventListener('DOMContentLoaded', function () {
+
   var byId = function (id) { return document.getElementById(id); };
   var key = new URLSearchParams(window.location.search).get('film');
   var film = STUBHOUSE_FILMS[key];
@@ -95,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
       var el = document.querySelector(sel);
       if (el) el.style.display = 'none';
     });
-    byId('mvRelated').closest('.section').style.display = 'none';
+    var relatedSec = byId('mvRelated').closest('.section');
+    if (relatedSec) relatedSec.style.display = 'none';
     var nf = byId('mvNotFound');
     nf.style.display = 'block';
     nf.style.paddingTop = 'calc(var(--header-height) + var(--spacing-xl))';
@@ -111,11 +32,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   document.title = film.title + ' — StubHouse';
+  var metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute('content', film.title + ' — ' + info.synopsis.slice(0, 150) + ' — StubHouse, Heliopolis, Cairo.');
 
   var posterImg = byId('mvPosterImg');
   posterImg.alt = film.title + ' poster';
+  var posterDims = { interstellar: { w: 576, h: 900 }, '12angrymen': { w: 589, h: 900 }, turabelmas: { w: 315, h: 420 }, ibrahimelabyad: { w: 283, h: 413 } };
+  var d = posterDims[key] || { w: 600, h: 900 };
+  posterImg.width = d.w;
+  posterImg.height = d.h;
   posterImg.onerror = function () { posterImg.remove(); };
-  posterImg.src = info.poster;
+  posterImg.src = 'images/' + key + '-600w.jpg';
 
   byId('mvGenre').textContent = info.genre;
   byId('mvTitle').textContent = film.title;
@@ -142,11 +69,13 @@ document.addEventListener('DOMContentLoaded', function () {
     avatar.textContent = initials;
     var name = document.createElement('h3');
     name.textContent = person.name;
-    var role = document.createElement('p');
-    role.textContent = person.role;
     var text = document.createElement('div');
     text.appendChild(name);
-    text.appendChild(role);
+    if (person.role) {
+      var role = document.createElement('p');
+      role.textContent = person.role;
+      text.appendChild(role);
+    }
     card.appendChild(avatar);
     card.appendChild(text);
     castGrid.appendChild(card);
@@ -171,11 +100,13 @@ document.addEventListener('DOMContentLoaded', function () {
     dl.appendChild(dd);
   });
 
-  byId('stubFilm').textContent = film.title;
-  byId('stubScreen').textContent = film.screen;
-  byId('stubTime').textContent = film.showtime;
-  byId('stubPrice').textContent = '$' + film.price + '.00';
-  byId('stubSeats').textContent = (STUBHOUSE_SEAT_COUNT - film.taken.length) + ' of ' + STUBHOUSE_SEAT_COUNT;
+  stubhouseApi.getTakenSeats(key, film.taken).then(function (taken) {
+    byId('stubFilm').textContent = film.title;
+    byId('stubScreen').textContent = film.screen;
+    byId('stubTime').textContent = film.showtime;
+    byId('stubPrice').textContent = formatPrice(film.price);
+    byId('stubSeats').textContent = (STUBHOUSE_SEAT_COUNT - taken.length) + ' of ' + STUBHOUSE_SEAT_COUNT;
+  });
 
   var related = byId('mvRelated');
   Object.keys(STUBHOUSE_FILMS).forEach(function (otherKey) {
@@ -209,22 +140,20 @@ document.addEventListener('DOMContentLoaded', function () {
   function closeTrailer() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
-    frame.innerHTML = '';          // removing the iframe stops playback
+    frame.innerHTML = '';
     var fb = modal.querySelector('.trailer-fallback');
     if (fb) fb.remove();
     document.body.style.overflow = '';
   }
 
-  trailerBtn.addEventListener('click', function () {
+  function openTrailer() {
     if (!info.trailerId) {
-      // No video ID filled in for this film yet: open a YouTube search for its trailer
       var q = encodeURIComponent(film.title + ' ' + info.year + ' official trailer');
       window.open('https://www.youtube.com/results?search_query=' + q, '_blank', 'noopener');
       return;
     }
     var watchUrl = 'https://www.youtube.com/watch?v=' + info.trailerId;
 
-    // YouTube refuses embeds from pages opened as file:// (error 153), so open it on YouTube instead
     if (window.location.protocol === 'file:') {
       window.open(watchUrl, '_blank', 'noopener');
       return;
@@ -238,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
     iframe.allowFullscreen = true;
     frame.appendChild(iframe);
 
-    // Fallback in case the video owner blocks embedding
     var fallback = document.createElement('a');
     fallback.className = 'trailer-fallback';
     fallback.href = watchUrl;
@@ -250,6 +178,20 @@ document.addEventListener('DOMContentLoaded', function () {
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+  }
+
+  if (window.location.hash === '#trailer') {
+    if (info.trailerId) {
+      openTrailer();
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    } else {
+      openTrailer();
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
+
+  trailerBtn.addEventListener('click', function () {
+    openTrailer();
   });
 
   byId('trailerClose').addEventListener('click', closeTrailer);

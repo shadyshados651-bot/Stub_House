@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Book seats, snacks and tickets online — StubHouse cinema, Heliopolis, Cairo. Choose your seat, add snacks, pay by card, mobile wallet or cash at the counter.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self'; base-uri 'self';">
 <title>Book Seats — StubHouse</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/book.css">
@@ -11,7 +17,7 @@
 
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -19,7 +25,7 @@
       <li><a href="index.html#hero">Home</a></li>
       <li><a href="index.html#showing">Now Showing</a></li>
       <li class="has-dropdown" id="ticketsDropdown">
-        <a href="javascript:void(0)">Tickets</a>
+        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true">Tickets</button>
         <ul class="dropdown">
           <li><a href="book.html">Book Seats</a></li>
           <li><a href="movies.html">Full Schedule</a></li>
@@ -83,7 +89,7 @@
           <span class="stub-label">Selected seats</span>
           <span class="stub-value" id="bkSelectedSeats">None</span>
         </div>
-        <div class="summary-total">Tickets: $<span id="bkSeatTotal">0</span>.00</div>
+        <div class="summary-total">Tickets: <span id="bkSeatTotal">—</span></div>
         <button type="button" class="btn btn-primary" id="toSnacks" disabled>Continue to Snacks</button>
       </div>
     </div>
@@ -99,7 +105,7 @@
         <article class="snack-card" id="popcornCard">
           <div class="snack-photo">
             <span class="snack-photo-label">Popcorn photo</span>
-            <img src="images/—Pngtree—cola soda ice glass_23520376.png" alt="Popcorn" onerror="this.remove()">
+            <img src="images/popcorn.png" alt="Popcorn" width="300" height="225" loading="lazy">
           </div>
           <div class="snack-body">
             <h3>Popcorn</h3>
@@ -115,9 +121,9 @@
             <div class="form-group">
               <label for="popcornSize">Size</label>
               <select id="popcornSize">
-                <option value="Small" data-price="4">Small — $4</option>
-                <option value="Medium" data-price="6" selected>Medium — $6</option>
-                <option value="Large" data-price="8">Large — $8</option>
+                <option value="Small" data-price="4">Small</option>
+                <option value="Medium" data-price="6" selected>Medium</option>
+                <option value="Large" data-price="8">Large</option>
               </select>
             </div>
             <div class="snack-action-row">
@@ -126,7 +132,7 @@
                 <span class="qty-value" id="popcornQty">1</span>
                 <button type="button" class="qty-btn" data-item="popcorn" data-delta="1" aria-label="More">+</button>
               </div>
-              <span class="snack-line-price" id="popcornPrice">$6.00</span>
+              <span class="snack-line-price" id="popcornPrice">—</span>
             </div>
             <button type="button" class="btn btn-primary snack-add" data-item="popcorn">Add to Order</button>
           </div>
@@ -136,7 +142,7 @@
         <article class="snack-card" id="drinkCard">
           <div class="snack-photo">
             <span class="snack-photo-label">Soft drink photo</span>
-            <img src="images/—Pngtree—watch movie popcorn maker snack_18726224.png" alt="Soft drink" onerror="this.remove()">
+            <img src="images/drink.png" alt="Soft drink" width="300" height="225" loading="lazy">
           </div>
           <div class="snack-body">
             <h3>Soft Drink</h3>
@@ -152,9 +158,9 @@
             <div class="form-group">
               <label for="drinkSize">Size</label>
               <select id="drinkSize">
-                <option value="Small" data-price="2">Small — $2</option>
-                <option value="Medium" data-price="3" selected>Medium — $3</option>
-                <option value="Large" data-price="4">Large — $4</option>
+                <option value="Small" data-price="2">Small</option>
+                <option value="Medium" data-price="3" selected>Medium</option>
+                <option value="Large" data-price="4">Large</option>
               </select>
             </div>
             <div class="snack-action-row">
@@ -163,7 +169,7 @@
                 <span class="qty-value" id="drinkQty">1</span>
                 <button type="button" class="qty-btn" data-item="drink" data-delta="1" aria-label="More">+</button>
               </div>
-              <span class="snack-line-price" id="drinkPrice">$3.00</span>
+              <span class="snack-line-price" id="drinkPrice">—</span>
             </div>
             <button type="button" class="btn btn-primary snack-add" data-item="drink">Add to Order</button>
           </div>
@@ -188,7 +194,7 @@
       <div class="order-lines" id="orderLines"></div>
       <div class="order-total">
         <span>Total</span>
-        <span>$<span id="orderTotal">0</span>.00</span>
+        <span id="orderTotal">—</span>
       </div>
 
       <div class="auth-notice" id="authNotice" hidden>
@@ -244,9 +250,8 @@
         <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
         <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
         <div class="footer-socials">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="GitHub">GH</a>
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
         </div>
       </div>
       <div>
@@ -276,7 +281,6 @@
     </div>
     <div class="footer-bottom">
       <span id="footerYear"></span>
-      <span>Built with vanilla HTML, CSS &amp; JS</span>
     </div>
   </div>
 </footer>
@@ -284,6 +288,7 @@
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
 <!-- script.js first (nav, theme, shared film data), then this page's own script -->
+<script src="js/seed.js"></script>
 <script src="js/script.js"></script>
 <script src="js/book.js"></script>
 </body>
