@@ -12,13 +12,18 @@
     accounts: 'stubhouseAccounts',
     currentUser: 'stubhouseCurrentUser',
     bookings: 'stubhouseBookings',
-    theme: 'stubhouseTheme'
+    holds: 'stubhouseHolds',
+    theme: 'stubhouseTheme',
+    watchlist: 'stubhouseWatchlist',
+    promos: 'stubhousePromos'
   };
 
   var SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
   var LOCK_ATTEMPTS = 5;
   var LOCK_MS = 30 * 60 * 1000;
   var HASH_ALGO = 'SHA-256';
+  var HOLD_MINUTES = 10; /* seat hold duration */
+  var HOLD_TEST_MINUTES = null; /* set > 0 to shorten for tests (dev flag) */
 
   function read(key, defaultValue) {
     return new Promise(function (resolve) {
@@ -70,7 +75,6 @@
           reject
         );
       } else {
-        // Demo fallback without the Web Crypto API (weaker; see README).
         var h = 0;
         for (var i = 0; i < text.length; i++) {
           h = ((h << 5) - h) + text.charCodeAt(i);
@@ -207,6 +211,18 @@
     });
   }
 
+  function cancelBooking(ref) {
+    return getBookings().then(function (list) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].ref === ref) {
+          list[i].status = 'cancelled';
+          return saveBookings(list).then(function () { return list[i]; });
+        }
+      }
+      return null;
+    });
+  }
+
   /* Taken seats for a film key: seed taken seats (passed in) merged with seats
      from confirmed bookings. Persisted per film so a seat cannot be double-booked. */
   function getTakenSeats(filmKey, baseTaken) {
@@ -225,6 +241,76 @@
     });
   }
 
+  /* ---------- Holds ---------- */
+
+  function nowMs() { return new Date().getTime(); }
+
+  function holdDurationMs() {
+    return HOLD_TEST_MINUTES ? HOLD_TEST_MINUTES * 60 * 1000 : HOLD_MINUTES * 60 * 1000;
+  }
+
+  function getHolds() {
+    return read(KEYS.holds, []);
+  }
+
+  function saveHolds(holds) {
+    return write(KEYS.holds, holds);
+  }
+
+  function cleanupExpiredHolds() {
+    return getHolds().then(function (holds) {
+      var now = nowMs();
+      var active = holds.filter(function (h) { return h.expiresAt > now; });
+      if (active.length !== holds.length) {
+        return saveHolds(active).then(function () { return active; });
+      }
+      return active;
+    });
+  }
+
+  function getActiveHoldsForShow(showId) {
+    return cleanupExpiredHolds().then(function (holds) {
+      return holds.filter(function (h) { return h.showId === showId; });
+    });
+  }
+
+  function placeHold(showId, seats, holderId) {
+    return cleanupExpiredHolds().then(function (holds) {
+      /* release any existing hold by this holder on this show */
+      holds = holds.filter(function (h) { return !(h.showId === showId && h.holderId === holderId); });
+      var hold = {
+        id: 'hd' + String(100000 + Math.floor(Math.random() * 900000)),
+        showId: showId,
+        seats: seats.slice().sort(function (a, b) { return a - b; }),
+        holderId: holderId,
+        expiresAt: nowMs() + holdDurationMs()
+      };
+      holds.push(hold);
+      return saveHolds(holds).then(function () { return hold; });
+    });
+  }
+
+  function releaseHold(holdId) {
+    return getHolds().then(function (holds) {
+      var idx = holds.findIndex(function (h) { return h.id === holdId; });
+      if (idx === -1) return null;
+      var removed = holds.splice(idx, 1)[0];
+      return saveHolds(holds).then(function () { return removed; });
+    });
+  }
+
+  function getTakenSeatsWithHolds(filmKey, baseTaken, showId) {
+    return getTakenSeats(filmKey, baseTaken).then(function (taken) {
+      return getActiveHoldsForShow(showId).then(function (holds) {
+        holds.forEach(function (h) {
+          h.seats.forEach(function (s) { if (taken.indexOf(s) === -1) taken.push(s); });
+        });
+        taken.sort(function (a, b) { return a - b; });
+        return { taken: taken, holds: holds };
+      });
+    });
+  }
+
   /* ---------- Theme ---------- */
 
   function getTheme() {
@@ -233,6 +319,48 @@
 
   function setTheme(theme) {
     return write(KEYS.theme, theme);
+  }
+
+  /* ---------- Promos ---------- */
+
+  function getPromos() {
+    return read(KEYS.promos, STUBHOUSE_PROMOS);
+  }
+
+  function validatePromo(code, subtotal) {
+    return getPromos().then(function (promos) {
+      var p = promos[code];
+      if (!p) return { valid: false, message: 'Invalid promo code.' };
+      var now = new Date().getTime();
+      if (new Date(p.expiresAt).getTime() < now) return { valid: false, message: 'This promo code has expired.' };
+      if (p.maxUses && p.usedCount >= p.maxUses) return { valid: false, message: 'This promo code is no longer available.' };
+      if (p.minTotal && subtotal < p.minTotal) return { valid: false, message: 'Minimum order of ' + formatPrice(p.minTotal) + ' required.' };
+      var discount = p.type === 'fixed' ? p.value : Math.round(subtotal * p.value / 100);
+      return { valid: true, code: code, discount: discount, message: 'Promo applied.' };
+    });
+  }
+
+  function formatPrice(egp) {
+    return new Intl.NumberFormat('en-EG', { style: 'currency', currency: 'EGP', minimumFractionDigits: 2 }).format(egp || 0);
+  }
+
+  /* ---------- Watchlist ---------- */
+
+  function getWatchlist() {
+    return read(KEYS.watchlist, []);
+  }
+
+  function toggleWatchlist(filmKey) {
+    return getWatchlist().then(function (list) {
+      var idx = list.indexOf(filmKey);
+      if (idx !== -1) {
+        list.splice(idx, 1);
+        return write(KEYS.watchlist, list).then(function () { return { watching: false, list: list }; });
+      } else {
+        list.push(filmKey);
+        return write(KEYS.watchlist, list).then(function () { return { watching: true, list: list }; });
+      }
+    });
   }
 
   window.stubhouseApi = {
@@ -247,9 +375,19 @@
     saveBookings: saveBookings,
     addBooking: addBooking,
     getBooking: getBooking,
+    cancelBooking: cancelBooking,
     getTakenSeats: getTakenSeats,
+    getTakenSeatsWithHolds: getTakenSeatsWithHolds,
+    placeHold: placeHold,
+    releaseHold: releaseHold,
+    cleanupExpiredHolds: cleanupExpiredHolds,
     getTheme: getTheme,
-    setTheme: setTheme
+    setTheme: setTheme,
+    getPromos: getPromos,
+    validatePromo: validatePromo,
+    getWatchlist: getWatchlist,
+    toggleWatchlist: toggleWatchlist,
+    HOLD_MINUTES: HOLD_MINUTES
   };
 
 })();

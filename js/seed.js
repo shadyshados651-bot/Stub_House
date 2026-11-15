@@ -1,6 +1,5 @@
 /* js/seed.js — StubHouse sample data (demo only, clearly marked).
-   Single source of truth for film data used by index.html, book.html and
-   movie.html. Load this file before js/script.js.
+   Single source of truth for film/hall/show/pricing data.
    Replace with real programme data before launch.
 */
 
@@ -14,6 +13,184 @@ var STUBHOUSE_FILMS = {
 };
 
 /* Prices are in EGP (Egyptian pounds). Display with Intl.NumberFormat('en-EG', ...). */
+
+/* ---------- Halls ---------- */
+var STUBHOUSE_HALLS = {
+  hall1: { id: 'hall1', name: 'Hall 1', format: '2D', rows: [
+    { label: 'A', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'B', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'C', seats: 10, aisleAfter: [], wheelchair: [1], recliner: false },
+    { label: 'D', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'E', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'F', seats: 10, aisleAfter: [5], wheelchair: [], recliner: false }
+  ]},
+  hall2: { id: 'hall2', name: 'Hall 2', format: '3D', rows: [
+    { label: 'A', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'B', seats: 10, aisleAfter: [], wheelchair: [0], recliner: false },
+    { label: 'C', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'D', seats: 10, aisleAfter: [5], wheelchair: [], recliner: false },
+    { label: 'E', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'F', seats: 10, aisleAfter: [], wheelchair: [], recliner: true }
+  ]},
+  hall3: { id: 'hall3', name: 'Hall 3', format: 'IMAX', rows: [
+    { label: 'A', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'B', seats: 10, aisleAfter: [], wheelchair: [], recliner: true },
+    { label: 'C', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'D', seats: 10, aisleAfter: [], wheelchair: [3], recliner: false },
+    { label: 'E', seats: 10, aisleAfter: [], wheelchair: [], recliner: false },
+    { label: 'F', seats: 10, aisleAfter: [], wheelchair: [], recliner: false }
+  ]},
+  hall4: { id: 'hall4', name: 'Hall 4', format: 'VIP', rows: [
+    { label: 'A', seats: 6, aisleAfter: [], wheelchair: [], recliner: true },
+    { label: 'B', seats: 6, aisleAfter: [], wheelchair: [], recliner: true },
+    { label: 'C', seats: 6, aisleAfter: [], wheelchair: [], recliner: true },
+    { label: 'D', seats: 6, aisleAfter: [], wheelchair: [], recliner: true }
+  ]}
+};
+
+/* ---------- Ticket types (per film override possible) ---------- */
+var STUBHOUSE_TICKET_TYPES = {
+  adult: { label: 'Adult', discount: 0 },
+  student: { label: 'Student', discount: 0.2 },
+  child: { label: 'Child', discount: 0.5 }
+};
+
+/* ---------- Fees (demo) ---------- */
+var STUBHOUSE_FEES = { serviceFee: 5, taxRate: 0.05 }; /* 5 EGP service fee, 5% tax */
+
+/* ---------- Shows: next 7 days, 2-4 shows per film per day ---------- */
+function addDays(date, n) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+function fmtDate(d) {
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+
+function fmtTime(h, m) { return pad(h) + ':' + pad(m); }
+
+var STUBHOUSE_SHOWS = (function () {
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  var shows = [];
+  var id = 1;
+  var slots = [
+    { h: 13, m: 0 }, { h: 16, m: 30 }, { h: 19, m: 15 }, { h: 22, m: 0 }
+  ];
+  var filmKeys = Object.keys(STUBHOUSE_FILMS);
+  var hallIds = Object.keys(STUBHOUSE_HALLS);
+  for (var day = 0; day < 7; day++) {
+    var date = addDays(today, day);
+    var dateStr = fmtDate(date);
+    /* 2-4 shows per film per day */
+    var perDay = 2 + (day % 3);
+    filmKeys.forEach(function (fk, fi) {
+      for (var s = 0; s < perDay; s++) {
+        var slot = slots[(fi + s) % slots.length];
+        var hallId = hallIds[(fi + s) % hallIds.length];
+        var hall = STUBHOUSE_HALLS[hallId];
+        var basePrice = STUBHOUSE_FILMS[fk].price;
+        var formatMult = hall.format === 'IMAX' ? 1.5 : (hall.format === 'VIP' ? 1.8 : (hall.format === '3D' ? 1.2 : 1));
+        shows.push({
+          id: 'sh' + String(1000 + id++),
+          filmKey: fk,
+          date: dateStr,
+          time: fmtTime(slot.h, slot.m),
+          hallId: hallId,
+          subtitles: day % 2 === 0 ? 'Arabic' : 'English',
+          prices: {
+            adult: Math.round(basePrice * formatMult),
+            student: Math.round(basePrice * formatMult * 0.8),
+            child: Math.round(basePrice * formatMult * 0.5)
+          }
+        });
+      }
+    });
+  }
+  return shows;
+})();
+
+/* ---------- Promo codes (demo) ---------- */
+var STUBHOUSE_PROMOS = {
+  STUB10: { code: 'STUB10', type: 'percent', value: 10, minTotal: 50, expiresAt: '2026-12-31', maxUses: 1000, usedCount: 0 },
+  WELCOME20: { code: 'WELCOME20', type: 'percent', value: 20, minTotal: 100, expiresAt: '2026-12-31', maxUses: 100, usedCount: 0 },
+  SAVE25: { code: 'SAVE25', type: 'fixed', value: 25, minTotal: 100, expiresAt: '2026-11-30', maxUses: 500, usedCount: 0 }
+};
+
+/* ---------- Demo seed bookings ---------- */
+var STUBHOUSE_SEED_BOOKINGS = [
+  {
+    ref: 'STB-K9M2P1',
+    filmKey: 'interstellar',
+    film: 'Interstellar',
+    screen: '04',
+    showtime: 'Fri, 8:45 PM',
+    showId: null,
+    seats: [0, 1],
+    tickets: [{ type: 'Adult', qty: 2, unit: 15 }],
+    snacks: [],
+    subtotal: 30,
+    discount: 0,
+    fee: 5,
+    tax: 1.75,
+    total: 36.75,
+    currency: 'EGP',
+    payment: { method: 'card', status: 'paid', last4: '1111' },
+    contact: { name: 'Yara Mahmoud', email: 'yara.mahmoud@example.com', phone: '01223456789' },
+    status: 'confirmed',
+    createdAt: '2026-11-12T20:15:00Z'
+  },
+  {
+    ref: 'STB-P4R8W1',
+    filmKey: '12angrymen',
+    film: '12 Angry Men',
+    screen: '02',
+    showtime: 'Fri, 6:30 PM',
+    showId: null,
+    seats: [9],
+    tickets: [{ type: 'Adult', qty: 1, unit: 10 }],
+    snacks: [],
+    subtotal: 10,
+    discount: 0,
+    fee: 5,
+    tax: 0.75,
+    total: 15.75,
+    currency: 'EGP',
+    payment: { method: 'cash', status: 'pending' },
+    contact: { name: 'Omar Fathy', email: 'omar.fathy@example.com', phone: '01098765432' },
+    status: 'confirmed',
+    createdAt: '2026-11-13T19:40:00Z'
+  },
+  {
+    ref: 'STB-J3N6V5',
+    filmKey: 'turabelmas',
+    film: 'Turab El Mas',
+    screen: '07',
+    showtime: 'Fri, 9:15 PM',
+    showId: null,
+    seats: [5, 11],
+    tickets: [{ type: 'Adult', qty: 1, unit: 12 }, { type: 'Student', qty: 1, unit: 9 }],
+    snacks: [{ item: 'Popcorn', type: 'Butter', size: 'Medium', qty: 1 }],
+    subtotal: 24,
+    discount: 0,
+    fee: 5,
+    tax: 1.45,
+    total: 30.45,
+    currency: 'EGP',
+    payment: { method: 'wallet', status: 'paid' },
+    contact: { name: 'Layla Nassar', email: 'layla.nassar@example.com', phone: '01155566677' },
+    status: 'confirmed',
+    createdAt: '2026-11-14T21:05:00Z'
+  }
+];
+
+/* Cast roles above verified against Wikipedia / elcinema / cineamo (Diamond Dust, 2018).
+   Removed unverified entries for Turab El Mas: Khaled El Sawy ("Supporting") and
+   Sawsan Badr ("Supporting") — no matching credited role found. */
 
 var STUBHOUSE_MOVIE_INFO = {
   interstellar: {
@@ -95,64 +272,3 @@ var STUBHOUSE_MOVIE_INFO = {
     trailerId: null /* UNVERIFIED: cAqdap-Bvfk could not be confirmed as the official trailer; falls back to YouTube search */
   }
 };
-
-/* Cast roles above verified against Wikipedia / elcinema / cineamo (Diamond Dust, 2018).
-   Removed unverified entries for Turab El Mas: Khaled El Sawy ("Supporting") and
-   Sawsan Badr ("Supporting") — no matching credited role found. */
-
-var STUBHOUSE_SEED_BOOKINGS = [
-  {
-    ref: 'STB-K9M2P1',
-    filmKey: 'interstellar',
-    film: 'Interstellar',
-    screen: '04',
-    showtime: 'Fri, 8:45 PM',
-    seats: [0, 1],
-    tickets: [{ type: 'Adult', qty: 2, unit: 15 }],
-    snacks: [],
-    subtotal: 30,
-    discount: 0,
-    total: 30,
-    currency: 'EGP',
-    payment: { method: 'card', status: 'paid', last4: '1111' },
-    contact: { name: 'Yara Mahmoud', email: 'yara.mahmoud@example.com', phone: '01223456789' },
-    status: 'confirmed',
-    createdAt: '2026-11-12T20:15:00Z'
-  },
-  {
-    ref: 'STB-P4R8W1',
-    filmKey: '12angrymen',
-    film: '12 Angry Men',
-    screen: '02',
-    showtime: 'Fri, 6:30 PM',
-    seats: [9],
-    tickets: [{ type: 'Adult', qty: 1, unit: 10 }],
-    snacks: [],
-    subtotal: 10,
-    discount: 0,
-    total: 10,
-    currency: 'EGP',
-    payment: { method: 'cash', status: 'pending' },
-    contact: { name: 'Omar Fathy', email: 'omar.fathy@example.com', phone: '01098765432' },
-    status: 'confirmed',
-    createdAt: '2026-11-13T19:40:00Z'
-  },
-  {
-    ref: 'STB-J3N6V5',
-    filmKey: 'turabelmas',
-    film: 'Turab El Mas',
-    screen: '07',
-    showtime: 'Fri, 9:15 PM',
-    seats: [5, 11],
-    tickets: [{ type: 'Adult', qty: 1, unit: 12 }, { type: 'Student', qty: 1, unit: 9 }],
-    snacks: [{ item: 'Popcorn', type: 'Butter', size: 'Medium', qty: 1 }],
-    subtotal: 24,
-    discount: 0,
-    total: 24,
-    currency: 'EGP',
-    payment: { method: 'wallet', status: 'paid' },
-    contact: { name: 'Layla Nassar', email: 'layla.nassar@example.com', phone: '01155566677' },
-    status: 'confirmed',
-    createdAt: '2026-11-14T21:05:00Z'
-  }
-];
