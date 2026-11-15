@@ -132,6 +132,90 @@ document.addEventListener('DOMContentLoaded', function () {
     related.appendChild(link);
   });
 
+  /* ---------- Watchlist ---------- */
+  var watchlistBtn = byId('mvWatchlistBtn');
+  function updateWatchlistUI(watching) {
+    watchlistBtn.classList.toggle('selected', watching);
+    watchlistBtn.textContent = watching ? '✓ Watchlist' : '♥ Watchlist';
+  }
+  stubhouseApi.getWatchlist().then(function (list) {
+    updateWatchlistUI(list.indexOf(key) !== -1);
+  });
+  watchlistBtn.addEventListener('click', function () {
+    stubhouseApi.toggleWatchlist(key).then(function (res) {
+      updateWatchlistUI(res.watching);
+      showToast(res.watching ? 'Added to watchlist.' : 'Removed from watchlist.', 'info');
+    });
+  });
+
+  /* ---------- Share (group invite, F18) ---------- */
+  var shareBtn = byId('mvShareBtn');
+  shareBtn.addEventListener('click', function () {
+    var url = window.location.origin + window.location.pathname + '?film=' + key;
+    var text = 'Check out ' + film.title + ' at StubHouse';
+    if (navigator.share) {
+      navigator.share({ title: film.title, text: text, url: url }).catch(function () {});
+    } else {
+      var wa = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url);
+      window.open(wa, '_blank', 'noopener');
+    }
+  });
+
+  /* ---------- Showtimes list (deep-link to booking) ---------- */
+  var dateStrip = byId('mvDateStrip');
+  var showtimesGrid = byId('mvShowtimes');
+  var filmShows = STUBHOUSE_SHOWS.filter(function (s) { return s.filmKey === key; });
+  var dates = [];
+  filmShows.forEach(function (s) { if (dates.indexOf(s.date) === -1) dates.push(s.date); });
+  dates.sort();
+  var selDate = dates[0] || null;
+  dates.forEach(function (d) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (d === selDate ? ' selected' : '');
+    b.textContent = d;
+    b.addEventListener('click', function () {
+      selDate = d;
+      dateStrip.querySelectorAll('.chip').forEach(function (x) { x.classList.toggle('selected', x === b); });
+      renderShowtimes();
+    });
+    dateStrip.appendChild(b);
+  });
+
+  function renderShowtimes() {
+    showtimesGrid.innerHTML = '';
+    var dayShows = filmShows.filter(function (s) { return s.date === selDate; });
+    if (dayShows.length === 0) {
+      showtimesGrid.innerHTML = '<p style="color:var(--muted); grid-column:1/-1;">No showtimes this date.</p>';
+      return;
+    }
+    dayShows.forEach(function (show) {
+      var hall = STUBHOUSE_HALLS[show.hallId];
+      var card = document.createElement('article');
+      card.className = 'movie-card';
+      var info = document.createElement('div');
+      info.className = 'movie-body';
+      var h = document.createElement('h3');
+      h.textContent = show.time;
+      var meta = document.createElement('div');
+      meta.className = 'movie-meta';
+      meta.textContent = hall.name + ' · ' + hall.format + ' · ' + show.subtitles + ' subtitles';
+      var price = document.createElement('div');
+      price.className = 'movie-meta';
+      price.textContent = stubhouseFormatPrice ? stubhouseFormatPrice(show.prices.adult) : ('EGP ' + show.prices.adult);
+      price.style.color = 'var(--gold)';
+      price.style.fontWeight = '700';
+      var btn = document.createElement('a');
+      btn.href = 'book.html?film=' + key + '&show=' + show.id;
+      btn.className = 'btn btn-primary';
+      btn.textContent = 'Book Seats';
+      info.appendChild(h); info.appendChild(meta); info.appendChild(price); info.appendChild(btn);
+      card.appendChild(info);
+      showtimesGrid.appendChild(card);
+    });
+  }
+  renderShowtimes();
+
   /* ---------- Trailer ---------- */
   var modal = byId('trailerModal');
   var frame = byId('trailerFrame');

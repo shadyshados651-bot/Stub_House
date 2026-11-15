@@ -843,6 +843,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Init ---------- */
   loadFilms();
+
+  var urlFilm = new URLSearchParams(window.location.search).get('film');
+  var urlShow = new URLSearchParams(window.location.search).get('show');
+  if (urlFilm && films[urlFilm]) {
+    state.film = urlFilm;
+    el.filmSelect.value = urlFilm;
+    loadDates();
+    if (urlShow) {
+      /* preselect the deep-linked show once dates are ready */
+      var checkShow = setInterval(function () {
+        if (state.date) {
+          clearInterval(checkShow);
+          var s = shows.find(function (x) { return x.id === urlShow && x.filmKey === urlFilm && x.date === state.date; });
+          if (s) { selectShow(s); showStep(2); loadSeatMap(); }
+        }
+      }, 50);
+    }
+  }
+
   window.addEventListener('storage', function () { if (state.step > 1) loadSeatMap(); });
 
 });
