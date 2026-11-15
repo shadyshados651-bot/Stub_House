@@ -3,15 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Movie details and showtimes — StubHouse cinema, Heliopolis, Cairo.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self'; base-uri 'self';">
 <title>Movie — StubHouse</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/movie.css">
 </head>
 <body>
+<a href="#mvTitle" class="skip-link">Skip to movie title</a>
 
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -19,7 +26,7 @@
       <li><a href="index.html#hero">Home</a></li>
       <li><a href="index.html#showing">Now Showing</a></li>
       <li class="has-dropdown" id="ticketsDropdown">
-        <a href="javascript:void(0)">Tickets</a>
+        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true">Tickets</button>
         <ul class="dropdown">
           <li><a href="book.html">Book Seats</a></li>
           <li><a href="movies.html">Full Schedule</a></li>
@@ -34,7 +41,13 @@
           <span class="theme-slider"></span>
         </label>
       </li>
-      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -63,6 +76,28 @@
     <h2 class="section-title">Cast</h2>
     <p class="section-sub" id="mvCastSub">Meet the people on screen.</p>
     <div class="cast-grid" id="mvCast"></div>
+    <div style="display:flex; justify-content:flex-end; gap:var(--spacing-sm); margin-top:var(--spacing-md);">
+      <button type="button" class="btn btn-outline" id="mvWatchlistBtn" aria-label="Add to watchlist">♥ Watchlist</button>
+      <button type="button" class="btn btn-outline" id="mvShareBtn" aria-label="Share">Share</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface);">
+  <div class="container">
+    <h2 class="section-title" style="text-align:left;">Showtimes</h2>
+    <p class="section-sub">Pick a date and screen.</p>
+    <div class="chips" id="mvDateStrip"></div>
+    <div class="movie-grid" id="mvShowtimes"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Reviews</h2>
+    <p class="section-sub">Verified viewers only — you need a confirmed booking to review.</p>
+    <div id="mvReviewsForm" style="max-width:520px; margin:0 auto var(--spacing-lg);"></div>
+    <div id="mvReviewsList"></div>
   </div>
 </section>
 
@@ -120,9 +155,8 @@
         <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
         <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
         <div class="footer-socials">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="GitHub">GH</a>
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
         </div>
       </div>
       <div>
@@ -152,13 +186,14 @@
     </div>
     <div class="footer-bottom">
       <span id="footerYear"></span>
-      <span>Built with vanilla HTML, CSS &amp; JS</span>
     </div>
   </div>
 </footer>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
+<script src="js/seed.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
 <script src="js/movie.js"></script>
 </body>

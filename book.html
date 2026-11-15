@@ -4,14 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book Seats — StubHouse</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self'; base-uri 'self';">
+<meta name="description" content="Book seats, snacks and tickets online — StubHouse cinema, Heliopolis, Cairo. Choose your seat, add snacks, pay by card, mobile wallet or cash at the counter.">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/book.css">
 </head>
 <body>
+<a href="#bkSteps" class="skip-link">Skip to booking steps</a>
 
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -19,7 +26,7 @@
       <li><a href="index.html#hero">Home</a></li>
       <li><a href="index.html#showing">Now Showing</a></li>
       <li class="has-dropdown" id="ticketsDropdown">
-        <a href="javascript:void(0)">Tickets</a>
+        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true">Tickets</button>
         <ul class="dropdown">
           <li><a href="book.html">Book Seats</a></li>
           <li><a href="movies.html">Full Schedule</a></li>
@@ -34,7 +41,13 @@
           <span class="theme-slider"></span>
         </label>
       </li>
-      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -49,26 +62,35 @@
 <section class="section">
   <div class="container">
 
-    <!-- Progress steps -->
     <ol class="bk-steps" id="bkSteps">
-      <li class="active" data-step="1"><span class="bk-step-num">1</span><span class="bk-step-name">Seats</span></li>
-      <li data-step="2"><span class="bk-step-num">2</span><span class="bk-step-name">Snacks</span></li>
-      <li data-step="3"><span class="bk-step-num">3</span><span class="bk-step-name">Checkout</span></li>
+      <li class="active" data-step="1"><span class="bk-step-num">1</span><span class="bk-step-name">Showtime</span></li>
+      <li data-step="2"><span class="bk-step-num">2</span><span class="bk-step-name">Seats</span></li>
+      <li data-step="3"><span class="bk-step-num">3</span><span class="bk-step-name">Snacks</span></li>
+      <li data-step="4"><span class="bk-step-num">4</span><span class="bk-step-name">Checkout</span></li>
     </ol>
 
-    <!-- STEP 1 — SEATS -->
-    <div class="booking-panel bk-panel active" id="stepSeats">
+    <!-- STEP 1 — SHOWTIME -->
+    <div class="bk-panel active" id="stepShowtime">
       <div class="film-select-row">
         <label for="bkFilmSelect">Choose your film</label>
-        <select id="bkFilmSelect">
-          <option value="interstellar">Interstellar — 8:45 PM</option>
-          <option value="12angrymen">12 Angry Men — 6:30 PM</option>
-          <option value="turabelmas">Turab El Mas — 9:15 PM</option>
-          <option value="ibrahimelabyad">Ibrahim El Abyad — 10:00 PM</option>
-        </select>
-        <p class="bk-film-info" id="bkFilmInfo"></p>
+        <select id="bkFilmSelect"></select>
       </div>
+      <div class="bk-date-strip" id="bkDateStrip"></div>
+      <div class="bk-showtimes" id="bkShowtimes"></div>
+      <div class="bk-nav-row">
+        <button type="button" class="btn btn-primary" id="toSeats" disabled>Choose Seats</button>
+      </div>
+    </div>
 
+    <!-- STEP 2 — SEATS -->
+    <div class="bk-panel" id="stepSeats">
+      <div class="bk-seat-header">
+        <div>
+          <h2 id="bkSeatFilmTitle">Seats</h2>
+          <p id="bkSeatShowInfo" class="bk-film-info"></p>
+        </div>
+        <div id="bkHoldCountdown" class="countdown" style="display:none;"></div>
+      </div>
       <div class="screen-label">Screen faces this way</div>
       <div class="screen"></div>
       <div class="seat-map" id="bkSeatMap"></div>
@@ -76,99 +98,57 @@
         <span><span class="legend-dot" style="background:var(--seat-free)"></span> Available</span>
         <span><span class="legend-dot" style="background:var(--seat-taken)"></span> Taken</span>
         <span><span class="legend-dot" style="background:var(--seat-selected)"></span> Selected</span>
+        <span><span class="legend-dot" style="background:var(--seat-free); border:2px solid var(--gold); border-radius:50%;"></span> VIP / Recliner</span>
       </div>
-
       <div class="booking-summary">
         <div>
           <span class="stub-label">Selected seats</span>
           <span class="stub-value" id="bkSelectedSeats">None</span>
         </div>
-        <div class="summary-total">Tickets: $<span id="bkSeatTotal">0</span>.00</div>
+        <div class="summary-total">Tickets: <span id="bkSeatTotal">—</span></div>
+      </div>
+      <div id="bkTicketTypes" class="ticket-types">
+        <fieldset>
+          <legend>Ticket type</legend>
+          <div class="ticket-type-row">
+            <label><input type="radio" name="bkTicketType" value="adult" checked> Adult <span class="ticket-type-price" id="ttPriceAdult">—</span></label>
+            <label><input type="radio" name="bkTicketType" value="student"> Student <span class="ticket-type-price" id="ttPriceStudent">—</span></label>
+            <label><input type="radio" name="bkTicketType" value="child"> Child <span class="ticket-type-price" id="ttPriceChild">—</span></label>
+          </div>
+          <div class="ticket-qty">
+            <label>Quantity</label>
+            <select id="bkTicketQty">
+              <option value="1">1 ticket</option>
+              <option value="2">2 tickets</option>
+              <option value="3">3 tickets</option>
+              <option value="4">4 tickets</option>
+              <option value="5">5 tickets</option>
+              <option value="6">6 tickets</option>
+              <option value="7">7 tickets</option>
+              <option value="8">8 tickets</option>
+            </select>
+            <p id="bkTicketMaxMsg" style="display:none; color:var(--error); font-size:0.78rem; font-family:var(--font-mono);">Maximum 8 seats per booking.</p>
+          </div>
+        </fieldset>
+      </div>
+      <div id="bkBestSeats" style="text-align:center; margin:var(--spacing-md) 0;">
+        <button type="button" class="btn btn-outline" id="bkBestSeatsBtn">Best available seats</button>
+      </div>
+      <div class="bk-nav-row">
+        <button type="button" class="btn btn-outline" id="backToShowtime">Back to Showtimes</button>
         <button type="button" class="btn btn-primary" id="toSnacks" disabled>Continue to Snacks</button>
       </div>
     </div>
 
-    <!-- STEP 2 — SNACKS -->
+    <!-- STEP 3 — SNACKS -->
     <div class="bk-panel" id="stepSnacks">
       <h2 class="section-title">Grab Some Snacks</h2>
-      <p class="section-sub">Totally optional. Pick a type and a size, add it to your order, and skip ahead whenever you're ready.</p>
+      <p class="section-sub">Totally optional. Pick a combo or build your own.</p>
 
-      <div class="snack-grid">
+      <div class="snack-combos" id="bkSnackCombos"></div>
 
-        <!-- POPCORN CARD — put your photo at images/popcorn.jpg, or change the src below -->
-        <article class="snack-card" id="popcornCard">
-          <div class="snack-photo">
-            <span class="snack-photo-label">Popcorn photo</span>
-            <img src="images/—Pngtree—cola soda ice glass_23520376.png" alt="Popcorn" onerror="this.remove()">
-          </div>
-          <div class="snack-body">
-            <h3>Popcorn</h3>
-            <div class="form-group">
-              <label for="popcornType">Type</label>
-              <select id="popcornType">
-                <option value="Salted">Salted</option>
-                <option value="Butter">Butter</option>
-                <option value="Caramel">Caramel</option>
-                <option value="Cheese">Cheese</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="popcornSize">Size</label>
-              <select id="popcornSize">
-                <option value="Small" data-price="4">Small — $4</option>
-                <option value="Medium" data-price="6" selected>Medium — $6</option>
-                <option value="Large" data-price="8">Large — $8</option>
-              </select>
-            </div>
-            <div class="snack-action-row">
-              <div class="qty-stepper" aria-label="Popcorn quantity">
-                <button type="button" class="qty-btn" data-item="popcorn" data-delta="-1" aria-label="Fewer">−</button>
-                <span class="qty-value" id="popcornQty">1</span>
-                <button type="button" class="qty-btn" data-item="popcorn" data-delta="1" aria-label="More">+</button>
-              </div>
-              <span class="snack-line-price" id="popcornPrice">$6.00</span>
-            </div>
-            <button type="button" class="btn btn-primary snack-add" data-item="popcorn">Add to Order</button>
-          </div>
-        </article>
-
-        <!-- SOFT DRINK CARD — put your photo at soft-drink.jpg (same folder), or change the src below -->
-        <article class="snack-card" id="drinkCard">
-          <div class="snack-photo">
-            <span class="snack-photo-label">Soft drink photo</span>
-            <img src="images/—Pngtree—watch movie popcorn maker snack_18726224.png" alt="Soft drink" onerror="this.remove()">
-          </div>
-          <div class="snack-body">
-            <h3>Soft Drink</h3>
-            <div class="form-group">
-              <label for="drinkType">Type</label>
-              <select id="drinkType">
-                <option value="Cola">Cola</option>
-                <option value="Lemon-Lime">Lemon-Lime</option>
-                <option value="Orange">Orange</option>
-                <option value="Iced Tea">Iced Tea</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="drinkSize">Size</label>
-              <select id="drinkSize">
-                <option value="Small" data-price="2">Small — $2</option>
-                <option value="Medium" data-price="3" selected>Medium — $3</option>
-                <option value="Large" data-price="4">Large — $4</option>
-              </select>
-            </div>
-            <div class="snack-action-row">
-              <div class="qty-stepper" aria-label="Drink quantity">
-                <button type="button" class="qty-btn" data-item="drink" data-delta="-1" aria-label="Fewer">−</button>
-                <span class="qty-value" id="drinkQty">1</span>
-                <button type="button" class="qty-btn" data-item="drink" data-delta="1" aria-label="More">+</button>
-              </div>
-              <span class="snack-line-price" id="drinkPrice">$3.00</span>
-            </div>
-            <button type="button" class="btn btn-primary snack-add" data-item="drink">Add to Order</button>
-          </div>
-        </article>
-
+      <div class="snack-grid" id="bkSnackGrid">
+        <!-- popcorn and drink cards injected by JS -->
       </div>
 
       <div class="snack-cart">
@@ -177,25 +157,73 @@
       </div>
 
       <div class="bk-nav-row">
-        <button type="button" class="btn btn-outline" id="backToSeats">Back to Seats</button>
+        <button type="button" class="btn btn-outline" id="backToSeats2">Back to Seats</button>
         <button type="button" class="btn btn-primary" id="toCheckout">Continue to Checkout</button>
       </div>
     </div>
 
-    <!-- STEP 3 — CHECKOUT -->
-    <div class="booking-panel bk-panel" id="stepCheckout">
+    <!-- STEP 4 — CHECKOUT -->
+    <div class="bk-panel" id="stepCheckout">
       <h2 class="bk-checkout-title">Order Summary</h2>
       <div class="order-lines" id="orderLines"></div>
-      <div class="order-total">
-        <span>Total</span>
-        <span>$<span id="orderTotal">0</span>.00</span>
+
+      <div class="promo-row" style="max-width:520px; margin:0 auto var(--spacing-lg);">
+        <label class="stub-label" style="display:block; margin-bottom:var(--spacing-sm);">Promo code</label>
+        <div style="display:flex; gap:var(--spacing-sm);">
+          <input type="text" id="bkPromoCode" placeholder="e.g. STUB10" maxlength="12">
+          <button type="button" class="btn btn-primary" id="bkApplyPromo">Apply</button>
+        </div>
+        <p id="bkPromoMsg" style="margin-top:var(--spacing-sm); font-size:0.78rem; font-family:var(--font-mono);"></p>
+        <p id="bkPromoDiscountLine" style="margin-top:var(--spacing-sm); font-size:0.85rem; color:var(--gold);"></p>
       </div>
 
-      <div class="auth-notice" id="authNotice" hidden>
-        <p><strong>Sign in to complete your purchase.</strong> Your seats and snacks are saved — you'll come straight back here after signing in.</p>
-        <a href="signin.html?next=book.html" class="btn btn-primary" id="signInToPay">Sign In to Pay</a>
+      <div class="order-total">
+        <span>Subtotal</span>
+        <span id="orderSubtotal">—</span>
       </div>
-      <p class="signed-in-note" id="signedInNote" hidden></p>
+      <div class="order-total">
+        <span>Discount</span>
+        <span id="orderDiscount">—</span>
+      </div>
+      <div class="order-total">
+        <span>Service fee</span>
+        <span id="orderFee">—</span>
+      </div>
+      <div class="order-total">
+        <span>Tax (5%)</span>
+        <span id="orderTax">—</span>
+      </div>
+      <div class="order-total" style="border-top:2px solid var(--border-color); padding-top:var(--spacing-md);">
+        <span style="font-weight:700;">Total</span>
+        <span id="orderTotal" style="font-weight:700;">—</span>
+      </div>
+
+      <div class="cancellation-policy" style="max-width:520px; margin:var(--spacing-lg) auto; padding:var(--spacing-md); border:1px solid var(--border-color); border-radius:var(--radius); background:var(--surface);">
+        <span class="stub-label" style="display:block; font-size:0.75rem;">Cancellation policy</span>
+        <p style="font-size:0.85rem; margin:0;">Free cancellation until 2 hours before the show. Seats are released back to availability.</p>
+      </div>
+
+      <p class="demo-label" id="bkDemoLabel" style="text-align:center; font-size:0.78rem; color:var(--muted); margin:var(--spacing-md) 0;">Demo payment: no real charge</p>
+
+      <div class="auth-notice" id="authNotice">
+        <p>Continue as guest — name, email and phone are enough to receive your digital ticket.</p>
+      </div>
+
+      <div class="form-group" style="max-width:520px; margin:0 auto var(--spacing-md);">
+        <label for="bkContactName">Full Name</label>
+        <input type="text" id="bkContactName" placeholder="Yara Mahmoud" autocomplete="name" required>
+        <span class="form-error" id="bkContactNameError">Please enter your name.</span>
+      </div>
+      <div class="form-group" style="max-width:520px; margin:0 auto var(--spacing-md);">
+        <label for="bkContactEmail">Email</label>
+        <input type="email" id="bkContactEmail" placeholder="you@email.com" autocomplete="email" required>
+        <span class="form-error" id="bkContactEmailError">Please enter a valid email.</span>
+      </div>
+      <div class="form-group" style="max-width:520px; margin:0 auto var(--spacing-md);">
+        <label for="bkContactPhone">Phone</label>
+        <input type="tel" id="bkContactPhone" placeholder="01234567890" autocomplete="tel" required>
+        <span class="form-error" id="bkContactPhoneError">Please enter a valid Egyptian mobile number.</span>
+      </div>
 
       <div class="payment-row">
         <span class="stub-label">Payment method</span>
@@ -205,31 +233,37 @@
             <span>Cash at counter</span>
           </label>
           <label class="payment-option">
-            <input type="radio" name="bkPayment" value="visa">
-            <span>Visa card</span>
+            <input type="radio" name="bkPayment" value="wallet">
+            <span>Mobile wallet</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="bkPayment" value="card">
+            <span>Card</span>
           </label>
         </div>
         <div class="visa-fields" id="bkVisaFields">
-          <div class="form-group">
+          <div class="form-group" style="max-width:520px; margin:0 auto var(--spacing-md);">
             <label for="payCardNumber">Card Number</label>
-            <input type="text" id="payCardNumber" maxlength="19" placeholder="4111 1111 1111 1111">
-            <span class="form-error" id="payCardNumberError">Enter a valid 16-digit card number.</span>
+            <input type="text" id="payCardNumber" maxlength="19" placeholder="4111 1111 1111 1111" autocomplete="cc-number">
+            <span class="form-error" id="payCardNumberError">Enter a valid card number.</span>
           </div>
-          <div class="form-group">
-            <label for="payExpiry">Expiry (MM/YY)</label>
-            <input type="text" id="payExpiry" maxlength="5" placeholder="08/29">
-            <span class="form-error" id="payExpiryError">Enter a valid expiry date.</span>
-          </div>
-          <div class="form-group">
-            <label for="payCvv">CVV</label>
-            <input type="text" id="payCvv" maxlength="3" placeholder="123">
-            <span class="form-error" id="payCvvError">Enter a valid 3-digit CVV.</span>
+          <div class="form-group" style="max-width:520px; margin:0 auto var(--spacing-md); display:flex; gap:var(--spacing-sm);">
+            <div style="flex:1;">
+              <label for="payExpiry">Expiry (MM/YY)</label>
+              <input type="text" id="payExpiry" maxlength="5" placeholder="08/29" autocomplete="cc-exp">
+              <span class="form-error" id="payExpiryError">Enter a valid expiry date.</span>
+            </div>
+            <div style="flex:1;">
+              <label for="payCvv">CVV</label>
+              <input type="text" id="payCvv" maxlength="4" placeholder="123" autocomplete="cc-csc">
+              <span class="form-error" id="payCvvError">Enter a valid CVV.</span>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="bk-nav-row">
-        <button type="button" class="btn btn-outline" id="backToSnacks">Back to Snacks</button>
+        <button type="button" class="btn btn-outline" id="backToSnacks2">Back to Snacks</button>
         <button type="button" class="btn btn-primary" id="confirmPay" disabled>Confirm &amp; Pay</button>
       </div>
     </div>
@@ -241,12 +275,11 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
-        <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
+        <a href="index.html" class="brand"><span>Stub</span>House</a>
+        <p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">Your seat, held and ready.</p>
         <div class="footer-socials">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="GitHub">GH</a>
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
         </div>
       </div>
       <div>
@@ -276,14 +309,15 @@
     </div>
     <div class="footer-bottom">
       <span id="footerYear"></span>
-      <span>Built with vanilla HTML, CSS &amp; JS</span>
     </div>
   </div>
 </footer>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
-<!-- script.js first (nav, theme, shared film data), then this page's own script -->
+<script src="js/seed.js"></script>
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
 <script src="js/book.js"></script>
 </body>

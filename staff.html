@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Check-in — StubHouse</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self';">
+<meta name="description" content="Staff check-in — scan or enter a booking reference at StubHouse cinema, Heliopolis, Cairo.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#checkin" class="skip-link">Skip to check-in</a>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="book.html">Book Seats</a></li>
+      <li><a href="bookings.html">My Bookings</a></li>
+      <li class="theme-toggle-item">
+        <label class="theme-switch" for="themeToggle" aria-label="Toggle dark mode">
+          <input type="checkbox" id="themeToggle">
+          <span class="theme-slider"></span>
+        </label>
+      </li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Staff Check-in</span>
+    <h1>Scan a Stub</h1>
+    <p style="color:var(--muted); max-width:420px; margin:10px auto 0;">Demo only — local staff tool. Mark a booking as used and reject duplicates.</p>
+  </div>
+</header>
+
+<section class="section" id="checkin" style="padding:var(--spacing-xl) 0;">
+  <div class="container" style="max-width:520px; margin:0 auto;">
+    <div class="ticket-stub" style="max-width:100%; box-shadow:var(--shadow-md); border:1px solid var(--border-color);">
+      <div style="padding:var(--spacing-lg);">
+        <label for="staffRef" class="stub-label">Booking reference</label>
+        <input type="text" id="staffRef" placeholder="STB-K9M2P1" autocomplete="off" style="width:100%; max-width:260px; text-transform:uppercase; letter-spacing:2px; font-family:var(--font-display); font-size:1.2rem; text-align:center;">
+        <div style="display:flex; gap:var(--spacing-sm); margin-top:var(--spacing-md); justify-content:center;">
+          <button type="button" class="btn btn-primary" id="bCheckin">Check In</button>
+          <button type="button" class="btn btn-outline" id="bClear">Clear</button>
+        </div>
+        <p id="staffMsg" style="margin-top:var(--spacing-md); font-size:0.85rem; font-family:var(--font-mono); text-align:center; min-height:28px;"></p>
+      </div>
+    </div>
+
+    <div class="empty-state" style="max-width:100%; margin-top:var(--spacing-lg);">
+      <p>Enter a booking reference (e.g. STB-K9M2P1) to mark it as used. Already-used references are rejected.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand"><span>Stub</span>House</a>
+        <p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">Your seat, held and ready.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#showing">Now Showing</a></li>
+          <li><a href="book.html">Book Seats</a></li>
+          <li><a href="bookings.html">My Bookings</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="signin.html">Sign In</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay in the loop</h4>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="you@email.com" id="newsletterEmail" required>
+          <button type="submit">Join</button>
+        </form>
+        <div class="newsletter-msg" id="newsletterMsg">You're on the list!</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var byId = function (id) { return document.getElementById(id); };
+  var refInput = byId('staffRef');
+  var msg = byId('staffMsg');
+  var checkinBtn = byId('bCheckin');
+  var clearBtn = byId('bClear');
+
+  function setMsg(text, kind) {
+    msg.textContent = text;
+    msg.style.color = kind === 'success' ? 'var(--seat-free)' : (kind === 'error' ? 'var(--error)' : 'var(--primary)');
+  }
+
+  checkinBtn.addEventListener('click', function () {
+    var ref = refInput.value.trim().toUpperCase();
+    if (!/^STB-[A-Z2-9]{6}$/.test(ref)) {
+      setMsg('Enter a valid reference (e.g. STB-K9M2P1).', 'error');
+      return;
+    }
+    stubhouseApi.getBooking(ref).then(function (booking) {
+      if (!booking) {
+        setMsg('Reference not found.', 'error');
+        return;
+      }
+      if (booking.status === 'used') {
+        setMsg('Already used at ' + new Date(booking.usedAt).toLocaleString() + '. Duplicate rejected.', 'error');
+        return;
+      }
+      if (booking.status === 'cancelled') {
+        setMsg('This booking is cancelled.', 'error');
+        return;
+      }
+      booking.status = 'used';
+      booking.usedAt = new Date().toISOString();
+      stubhouseApi.getBookings().then(function (list) {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].ref === ref) { list[i] = booking; break; }
+        }
+        return stubhouseApi.saveBookings(list);
+      }).then(function () {
+        setMsg('Checked in: ' + booking.film + ' — ' + booking.seats.join(', ') + ' (' + booking.ref + ').', 'success');
+        refInput.value = '';
+      });
+    });
+  });
+
+  clearBtn.addEventListener('click', function () {
+    refInput.value = '';
+    setMsg('');
+    refInput.focus();
+  });
+
+  refInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') checkinBtn.click();
+  });
+});
+</script>
+</body>
+</html>

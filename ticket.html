@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Ticket — StubHouse</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self';">
+<meta name="description" content="Digital ticket — StubHouse cinema, Heliopolis, Cairo.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#ticket" class="skip-link">Skip to ticket</a>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="book.html">Book Seats</a></li>
+      <li><a href="bookings.html">My Bookings</a></li>
+      <li class="theme-toggle-item">
+        <label class="theme-switch" for="themeToggle" aria-label="Toggle dark mode">
+          <input type="checkbox" id="themeToggle">
+          <span class="theme-slider"></span>
+        </label>
+      </li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Digital Ticket</span>
+    <h1 id="ticketTitle">Your Stub</h1>
+  </div>
+</header>
+
+<section class="section" id="ticket" style="padding:var(--spacing-xl) 0;">
+  <div class="container">
+    <div id="ticketNotFound" style="display:none; text-align:center;">
+      <h2 class="section-title">Ticket not found</h2>
+      <p class="section-sub">Check your reference code and try again.</p>
+      <a href="bookings.html" class="btn btn-primary">My Bookings</a>
+    </div>
+
+    <div id="ticketCard" style="display:none;">
+      <div class="ticket-stub" style="transform:none; max-width:520px; margin:0 auto var(--spacing-lg); box-shadow:var(--shadow-md); border:1px solid var(--border-color);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--spacing-md);">
+          <div>
+            <span class="stub-label">StubHouse</span>
+            <h2 style="font-family:var(--font-display); font-size:2rem; margin:4px 0; color:var(--text);" id="dFilm">Film</h2>
+          </div>
+          <div style="text-align:right;">
+            <div class="stub-label">Reference</div>
+            <div style="font-family:var(--font-display); font-size:1.5rem; letter-spacing:2px; color:var(--primary);" id="dRef">STB-......</div>
+          </div>
+        </div>
+        <div style="border-bottom:2px dashed rgba(245,241,234,0.25); padding-bottom:var(--spacing-md); margin-bottom:var(--spacing-md);"></div>
+        <div id="dQr" style="text-align:center; margin:var(--spacing-md) 0;"></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-md); font-family:var(--font-mono); font-size:0.8rem;">
+          <div>
+            <div class="stub-label">Showtime</div>
+            <div id="dShowtime" style="font-size:1.1rem; color:var(--text);">—</div>
+          </div>
+          <div>
+            <div class="stub-label">Hall</div>
+            <div id="dHall" style="font-size:1.1rem; color:var(--text);">—</div>
+          </div>
+          <div>
+            <div class="stub-label">Seats</div>
+            <div id="dSeats" style="font-size:1.1rem; color:var(--text);">—</div>
+          </div>
+          <div>
+            <div class="stub-label">Status</div>
+            <div id="dStatus" style="font-size:1.1rem; color:var(--seat-free); font-weight:700;">—</div>
+          </div>
+        </div>
+        <div style="margin-top:var(--spacing-md); padding-top:var(--spacing-md); border-top:1px solid var(--border-color); font-size:0.8rem; color:var(--muted);">
+          <div class="stub-label">Total</div>
+          <div id="dTotal" style="font-family:var(--font-display); font-size:1.5rem; color:var(--gold);">—</div>
+        </div>
+        <div style="display:flex; gap:var(--spacing-sm); margin-top:var(--spacing-lg); justify-content:center;">
+          <button type="button" class="btn btn-outline" id="bAddCalendar">Add to Calendar</button>
+          <button type="button" class="btn btn-outline" id="bPrint">Print Ticket</button>
+        </div>
+      </div>
+      <p style="text-align:center; color:var(--muted); font-size:0.8rem; margin-top:var(--spacing-md);">
+        Present this stub at the counter or scan at the entrance. Screenshot it for quick access.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand"><span>Stub</span>House</a>
+        <p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">Your seat, held and ready.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#showing">Now Showing</a></li>
+          <li><a href="book.html">Book Seats</a></li>
+          <li><a href="bookings.html">My Bookings</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="signin.html">Sign In</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay in the loop</h4>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="you@email.com" id="newsletterEmail" required>
+          <button type="submit">Join</button>
+        </form>
+        <div class="newsletter-msg" id="newsletterMsg">You're on the list!</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/seed.js"></script>
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+<script src="js/vendor/qr.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var byId = function (id) { return document.getElementById(id); };
+  var ref = new URLSearchParams(window.location.search).get('ref');
+  var notFound = byId('ticketNotFound');
+  var card = byId('ticketCard');
+  if (!ref) { notFound.style.display = 'block'; return; }
+  stubhouseApi.getBooking(ref).then(function (booking) {
+    if (!booking) { notFound.style.display = 'block'; return; }
+    card.style.display = 'block';
+    byId('ticketTitle').textContent = booking.ref + ' — ' + booking.film;
+    byId('dFilm').textContent = booking.film;
+    byId('dRef').textContent = booking.ref;
+    byId('dShowtime').textContent = booking.showtime;
+    byId('dHall').textContent = booking.screen;
+    byId('dSeats').textContent = booking.seats.join(', ');
+    byId('dStatus').textContent = (booking.status || '').toUpperCase();
+    byId('dTotal').textContent = stubhouseFormatPrice ? stubhouseFormatPrice(booking.total) : ('EGP ' + booking.total);
+
+    var qrText = booking.ref + '|' + booking.film + '|' + booking.showtime + '|' + booking.seats.join(',');
+    var qr = stubhouseQR.generate(qrText, 220);
+    byId('dQr').innerHTML = qr.svg;
+
+    // Add to calendar (.ics)
+    byId('bAddCalendar').addEventListener('click', function () {
+      var dt = new Date(booking.showtime.replace(' ', 'T') + ':00');
+      var end = new Date(dt.getTime() + 2 * 60 * 60 * 1000);
+      var fmt = function (d) {
+        function pad(n){return n<10?'0'+n:n;}
+        return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());
+      };
+      var ics = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//StubHouse//EN',
+        'BEGIN:VEVENT','UID:'+booking.ref+'@stubhouse.local',
+        'DTSTAMP:'+fmt(new Date()),
+        'DTSTART:'+fmt(dt),'DTEND:'+fmt(end),
+        'SUMMARY:'+booking.film+' — StubHouse',
+        'DESCRIPTION:Seats '+booking.seats.join(', ')+' · Hall '+booking.screen+' · Ref '+booking.ref,
+        'LOCATION:StubHouse Cinema, 12 El Korba, Heliopolis, Cairo',
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+      var blob = new Blob([ics], { type: 'text/calendar' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = booking.ref + '.ics'; a.textContent = '';
+      a.dispatchEvent(new MouseEvent('click'));
+      URL.revokeObjectURL(url);
+    });
+
+    byId('bPrint').addEventListener('click', function () { window.print(); });
+  });
+});
+</script>
+</body>
+</html>

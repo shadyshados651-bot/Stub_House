@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile — StubHouse</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self';">
+<meta name="description" content="Profile — StubHouse cinema, Heliopolis, Cairo.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#profile" class="skip-link">Skip to profile</a>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="book.html">Book Seats</a></li>
+      <li><a href="bookings.html">My Bookings</a></li>
+      <li><a href="profile.html" id="navProfile">Profile</a></li>
+      <li class="theme-toggle-item">
+        <label class="theme-switch" for="themeToggle" aria-label="Toggle dark mode">
+          <input type="checkbox" id="themeToggle">
+          <span class="theme-slider"></span>
+        </label>
+      </li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Your Profile</span>
+    <h1 id="profileTitle">Profile</h1>
+  </div>
+</header>
+
+<section class="section" id="profile" style="padding:var(--spacing-xl) 0;">
+  <div class="container">
+    <div id="profileNotSigned" style="text-align:center; display:none;">
+      <div class="empty-state">
+        <p>Sign in to view your profile, booking history and watchlist.</p>
+        <a href="signin.html" class="btn btn-primary">Sign In</a>
+      </div>
+    </div>
+    <div id="profileSigned" style="display:none;">
+      <div class="ticket-stub" style="max-width:520px; margin:0 auto var(--spacing-lg); box-shadow:var(--shadow-md); border:1px solid var(--border-color);">
+        <div style="padding:var(--spacing-lg);">
+          <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:var(--spacing-md);">Account</h2>
+          <div class="form-group" style="max-width:100%; margin-bottom:var(--spacing-md);">
+            <label for="pName" class="stub-label">Full Name</label>
+            <input type="text" id="pName" placeholder="Yara Mahmoud" style="width:100%; padding:12px 14px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text);">
+          </div>
+          <div class="form-group" style="max-width:100%; margin-bottom:var(--spacing-md);">
+            <label for="pPhone" class="stub-label">Phone</label>
+            <input type="tel" id="pPhone" placeholder="01234567890" style="width:100%; padding:12px 14px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text);">
+          </div>
+          <div class="form-group" style="max-width:100%; margin-bottom:var(--spacing-md);">
+            <label for="pEmail" class="stub-label">Email</label>
+            <input type="email" id="pEmail" placeholder="you@email.com" readonly style="width:100%; padding:12px 14px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface-dim); color:var(--muted);">
+          </div>
+          <button type="button" class="btn btn-primary" id="bSaveProfile">Save Changes</button>
+          <p id="pMsg" style="margin-top:var(--spacing-md); font-size:0.85rem; font-family:var(--font-mono); text-align:center; min-height:28px;"></p>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="text-align:left;">Watchlist (Favourites)</h2>
+      <div id="pWatchlist"></div>
+
+      <h2 class="section-title" style="text-align:left;">Booking History</h2>
+      <div class="chips" style="margin-bottom:var(--spacing-lg);">
+        <button type="button" class="chip selected" id="pTabUpcoming">Upcoming</button>
+        <button type="button" class="chip" id="pTabPast">Past</button>
+      </div>
+      <div id="pBookings"></div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand"><span>Stub</span>House</a>
+        <p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">Your seat, held and ready.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#showing">Now Showing</a></li>
+          <li><a href="movies.html">Full Schedule</a></li>
+          <li><a href="book.html">Book Seats</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="signin.html">Sign In</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay in the loop</h4>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="you@email.com" id="newsletterEmail" required>
+          <button type="submit">Join</button>
+        </form>
+        <div class="newsletter-msg" id="newsletterMsg">You're on the list!</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var byId = function (id) { return document.getElementById(id); };
+  var notSigned = byId('profileNotSigned');
+  var signed = byId('profileSigned');
+  stubhouseApi.getCurrentUser().then(function (user) {
+    if (!user) { notSigned.style.display = 'block'; return; }
+    signed.style.display = 'block';
+    byId('navProfile').textContent = 'Profile (' + user.name + ')';
+    byId('pName').value = user.name || '';
+    byId('pEmail').value = user.email;
+    byId('profileTitle').textContent = user.name + '\'s Profile';
+    loadProfile(user);
+  });
+
+  function loadProfile(user) {
+    byId('pWatchlist').innerHTML = '';
+    byId('pBookings').innerHTML = '';
+    stubhouseApi.getWatchlist().then(function (list) {
+      if (list.length === 0) {
+        byId('pWatchlist').innerHTML = '<p style="color:var(--muted);">No favourites yet. Add films to your watchlist from a movie page.</p>';
+        return;
+      }
+      list.forEach(function (fk) {
+        var f = STUBHOUSE_FILMS[fk];
+        if (!f) return;
+        var card = document.createElement('div');
+        card.className = 'movie-card';
+        card.style.cssText = 'flex:1 1 30%; min-width:240px;';
+        var body = document.createElement('div');
+        body.className = 'movie-body';
+        var h = document.createElement('h3'); h.textContent = f.title;
+        var a = document.createElement('a');
+        a.href = 'movie.html?film=' + fk;
+        a.className = 'btn btn-primary';
+        a.textContent = 'View';
+        body.appendChild(h); body.appendChild(a);
+        card.appendChild(body);
+        byId('pWatchlist').appendChild(card);
+      });
+    });
+    stubhouseApi.getBookings().then(function (bookings) {
+      var mine = bookings.filter(function (b) {
+        var be = (b.contact && b.contact.email) || b.userEmail;
+        return be === user.email;
+      });
+      var now = new Date();
+      var upcoming = mine.filter(function (b) { return new Date(b.createdAt) > new Date(now - 86400000); });
+      var past = mine.filter(function (b) { return new Date(b.createdAt) <= new Date(now - 86400000); });
+      function renderList(container, items, emptyMsg) {
+        container.innerHTML = '';
+        if (items.length === 0) { container.innerHTML = '<p style="color:var(--muted); text-align:center;">' + emptyMsg + '</p>'; return; }
+        items.forEach(function (b) {
+          var stub = document.createElement('div');
+          stub.className = 'ticket-stub my-booking-stub';
+          stub.style.cssText = 'transform:none; margin-bottom:var(--spacing-md);';
+          var r = document.createElement('div'); r.className = 'stub-row';
+          var a1 = document.createElement('div'); var l1 = document.createElement('span'); l1.className = 'stub-label'; l1.textContent = 'Film';
+          var v1 = document.createElement('span'); v1.className = 'stub-value'; v1.textContent = b.film;
+          a1.appendChild(l1); a1.appendChild(v1);
+          var a2 = document.createElement('div'); var l2 = document.createElement('span'); l2.className = 'stub-label'; l2.textContent = 'Status';
+          var v2 = document.createElement('span'); v2.className = 'stub-value'; v2.textContent = (b.status || '').toUpperCase();
+          a2.appendChild(l2); a2.appendChild(v2);
+          r.appendChild(a1); r.appendChild(a2);
+          var r2 = document.createElement('div'); r2.className = 'stub-row';
+          var b1 = document.createElement('div'); var l3 = document.createElement('span'); l3.className = 'stub-label'; l3.textContent = 'Seats';
+          var v3 = document.createElement('span'); v3.className = 'stub-value'; v3.textContent = b.seats.join(', ');
+          b1.appendChild(l3); b1.appendChild(v3);
+          var b2 = document.createElement('div'); var l4 = document.createElement('span'); l4.className = 'stub-label'; l4.textContent = 'Total';
+          var v4 = document.createElement('span'); v4.className = 'stub-value'; v4.textContent = stubhouseFormatPrice ? stubhouseFormatPrice(b.total) : ('EGP ' + b.total);
+          b2.appendChild(l4); b2.appendChild(v4);
+          r2.appendChild(b1); r2.appendChild(b2);
+          stub.appendChild(r); stub.appendChild(r2);
+          container.appendChild(stub);
+        });
+      }
+      renderList(byId('pBookings'), upcoming, 'No upcoming bookings.');
+    });
+  });
+
+  byId('bSaveProfile').addEventListener('click', function () {
+    var name = byId('pName').value.trim();
+    var phone = byId('pPhone').value.trim();
+    var msg = byId('pMsg');
+    if (!name) { msg.textContent = 'Name is required.'; msg.style.color = 'var(--error)'; return; }
+    stubhouseApi.getCurrentUser().then(function (user) {
+      user.name = name;
+      user.phone = phone;
+      return stubhouseApi.setCurrentUser(user);
+    }).then(function () {
+      byId('navProfile').textContent = 'Profile (' + name + ')';
+      msg.textContent = 'Saved.';
+      msg.style.color = 'var(--seat-free)';
+      setTimeout(function () { msg.textContent = ''; }, 2000);
+    });
+  });
+
+  var tabs = [byId('pTabUpcoming'), byId('pTabPast')];
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('selected'); });
+      t.classList.add('selected');
+    });
+  });
+});
+</script>
+</body>
+</html>

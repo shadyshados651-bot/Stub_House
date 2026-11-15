@@ -4,13 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Full Schedule — StubHouse</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self';">
+<meta name="description" content="Full schedule — every screen, every showtime at StubHouse cinema, Heliopolis, Cairo.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<a href="#schedule" class="skip-link">Skip to movie schedule</a>
 
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -18,7 +25,7 @@
       <li><a href="index.html#hero">Home</a></li>
       <li><a href="index.html#showing">Now Showing</a></li>
       <li class="has-dropdown" id="ticketsDropdown">
-        <a href="javascript:void(0)">Tickets</a>
+        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true">Tickets</button>
         <ul class="dropdown">
           <li><a href="book.html">Book Seats</a></li>
           <li><a href="movies.html">Full Schedule</a></li>
@@ -33,7 +40,13 @@
           <span class="theme-slider"></span>
         </label>
       </li>
-      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -45,62 +58,25 @@
   </div>
 </header>
 
-<section class="section">
+<section class="section" id="schedule">
   <div class="container">
-    <div class="movie-grid">
-      <div class="movie-card">
-        <div class="movie-poster"><img src="images/interstellar.jpg" alt="Interstellar poster" onerror="this.remove()"><span>Interstellar</span></div>
-        <div class="movie-body">
-          <h3>Interstellar</h3>
-          <div class="movie-meta">SCI-FI · 2H 49M</div>
-          <p class="desc">A crew of explorers travels through a wormhole in search of a new home for humanity.</p>
-          <div class="badges"><span class="badge">Screen 04</span><span class="badge">8:45 PM</span><span class="badge">PG-13</span></div>
-          <div class="movie-actions">
-            <a href="book.html?film=interstellar" class="btn btn-primary">Book</a>
-            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">Trailer</a>
-          </div>
-        </div>
-      </div>
-      <div class="movie-card">
-        <div class="movie-poster"><img src="images/12angrymen.jpg" alt="12 Angry Men poster" onerror="this.remove()"><span>12 Angry Men</span></div>
-        <div class="movie-body">
-          <h3>12 Angry Men</h3>
-          <div class="movie-meta">DRAMA · 1H 36M</div>
-          <p class="desc">A lone juror tries to convince eleven others to reconsider the evidence before condemning a young man.</p>
-          <div class="badges"><span class="badge">Screen 02</span><span class="badge">6:30 PM</span><span class="badge">PG</span></div>
-          <div class="movie-actions">
-            <a href="book.html?film=12angrymen" class="btn btn-primary">Book</a>
-            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">Trailer</a>
-          </div>
-        </div>
-      </div>
-      <div class="movie-card">
-        <div class="movie-poster"><img src="images/turab-el-mas.jpg" alt="Turab El Mas poster" onerror="this.remove()"><span>Turab El Mas</span></div>
-        <div class="movie-body">
-          <h3>Turab El Mas</h3>
-          <div class="movie-meta">DRAMA · 2H 5M</div>
-          <p class="desc">Ambition and rivalry collide as one man claws his way through a business empire built on diamonds.</p>
-          <div class="badges"><span class="badge">Screen 07</span><span class="badge">9:15 PM</span><span class="badge">PG-13</span></div>
-          <div class="movie-actions">
-            <a href="book.html?film=turabelmas" class="btn btn-primary">Book</a>
-            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">Trailer</a>
-          </div>
-        </div>
-      </div>
-      <div class="movie-card">
-        <div class="movie-poster"><img src="images/ibrahim-el-abyad.jpg" alt="Ibrahim El Abyad poster" onerror="this.remove()"><span>Ibrahim El Abyad</span></div>
-        <div class="movie-body">
-          <h3>Ibrahim El Abyad</h3>
-          <div class="movie-meta">ACTION · 2H 10M</div>
-          <p class="desc">A man returns from prison determined to protect his family and reclaim his place on the streets.</p>
-          <div class="badges"><span class="badge">Screen 01</span><span class="badge">10:00 PM</span><span class="badge">R</span></div>
-          <div class="movie-actions">
-            <a href="book.html?film=ibrahimelabyad" class="btn btn-primary">Book</a>
-            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">Trailer</a>
-          </div>
-        </div>
-      </div>
+    <div class="bk-filters" style="display:flex; flex-wrap:wrap; gap:var(--spacing-sm); align-items:center; margin-bottom:var(--spacing-lg);">
+      <input type="search" id="bkMovieSearch" placeholder="Search films…" style="padding:10px 14px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text); flex:1; min-width:220px; font-family:var(--font-body); font-size:0.95rem;">
+      <div class="chips" id="bkGenreChips"></div>
+      <div class="chips" id="bkLangChips"></div>
+      <select id="bkMovieSort" style="padding:10px 14px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text); font-family:var(--font-body); font-size:0.9rem;">
+        <option value="title">Sort: Title</option>
+        <option value="rating">Sort: Rating</option>
+      </select>
     </div>
+
+    <div class="chips" style="margin-bottom:var(--spacing-lg);">
+      <button type="button" class="chip" id="bkTabNow" data-tab="now">Now Showing</button>
+      <button type="button" class="chip" id="bkTabComing" data-tab="coming">Coming Soon</button>
+    </div>
+
+    <div id="bkMovieGrid" class="movie-grid"></div>
+    <p id="bkEmptyMsg" style="text-align:center; color:var(--muted); display:none;">No films match your filters.</p>
   </div>
 </section>
 
@@ -108,12 +84,11 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
-        <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
+        <a href="index.html" class="brand"><span>Stub</span>House</a>
+        <p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">Your seat, held and ready.</p>
         <div class="footer-socials">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="GitHub">GH</a>
+          <a href="https://www.instagram.com/stubhouse/" aria-label="Instagram">IG</a>
+          <a href="https://x.com/stubhouse" aria-label="X">X</a>
         </div>
       </div>
       <div>
@@ -143,13 +118,137 @@
     </div>
     <div class="footer-bottom">
       <span id="footerYear"></span>
-      <span>Built with vanilla HTML, CSS &amp; JS</span>
     </div>
   </div>
 </footer>
 
-<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
-
+<script src="js/seed.js"></script>
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var byId = function (id) { return document.getElementById(id); };
+  var films = STUBHOUSE_FILMS;
+  var info = STUBHOUSE_MOVIE_INFO;
+  var shows = STUBHOUSE_SHOWS;
+  var grid = byId('bkMovieGrid');
+  var search = byId('bkMovieSearch');
+  var sortSel = byId('bkMovieSort');
+  var genreChips = byId('bkGenreChips');
+  var langChips = byId('bkLangChips');
+  var tabNow = byId('bkTabNow');
+  var tabComing = byId('bkTabComing');
+  var emptyMsg = byId('bkEmptyMsg');
+
+  var state = { q: '', genre: null, lang: null, sort: 'title', tab: 'now' };
+
+  /* build filter options */
+  var genres = {};
+  var langs = {};
+  Object.keys(info).forEach(function (k) {
+    genres[info[k].genre] = true;
+    langs[info[k].language] = true;
+  });
+  function chipContainer(container, values, key, onSelect) {
+    container.innerHTML = '';
+    Object.keys(values).sort().forEach(function (v) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = v;
+      b.addEventListener('click', function () {
+        container.querySelectorAll('.chip').forEach(function (x) { x.classList.remove('selected'); });
+        b.classList.add('selected');
+        state[key] = b.classList.contains('selected') ? v : null;
+        render();
+      });
+      container.appendChild(b);
+    });
+  }
+  chipContainer(genreChips, genres, 'genre');
+  chipContainer(langChips, langs, 'lang');
+
+  function hasShowtimeToday(filmKey) {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var str = today.getFullYear() + '-' + (today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
+    return shows.some(function (s) { return s.filmKey === filmKey && s.date === str; });
+  }
+
+  function matches(film) {
+    var inf = info[film.key];
+    if (state.q && film.title.toLowerCase().indexOf(state.q.toLowerCase()) === -1) return false;
+    if (state.genre && inf.genre !== state.genre) return false;
+    if (state.lang && inf.language !== state.lang) return false;
+    if (state.tab === 'now' && !hasShowtimeToday(film.key)) return false;
+    if (state.tab === 'coming') return false; /* no coming-soon titles in demo */
+    return true;
+  }
+
+  function render() {
+    var list = Object.keys(films).map(function (k) { return films[k]; }).filter(matches);
+    if (state.sort === 'title') list.sort(function (a, b) { return a.title.localeCompare(b.title); });
+    else list.sort(function (a, b) { return (info[b.key].year || 0) - (info[a.key].year || 0); });
+    grid.innerHTML = '';
+    if (list.length === 0) { emptyMsg.style.display = 'block'; return; }
+    emptyMsg.style.display = 'none';
+    list.forEach(function (film) {
+      var inf = info[film.key];
+      var card = document.createElement('article');
+      card.className = 'movie-card';
+      var poster = document.createElement('div');
+      poster.className = 'movie-poster';
+      var img = document.createElement('img');
+      img.src = inf.poster;
+      img.alt = film.title + ' poster';
+      img.width = 576;
+      img.height = 900;
+      img.loading = 'lazy';
+      poster.appendChild(img);
+      var body = document.createElement('div');
+      body.className = 'movie-body';
+      var h = document.createElement('h3');
+      h.textContent = film.title;
+      var meta = document.createElement('div');
+      meta.className = 'movie-meta';
+      meta.textContent = inf.genre + ' · ' + inf.runtime + ' · ' + inf.language;
+      var desc = document.createElement('p');
+      desc.className = 'desc';
+      desc.textContent = inf.synopsis;
+      var badges = document.createElement('div');
+      badges.className = 'badges';
+      ['Screen ' + film.screen, film.showtime, inf.rating].forEach(function (t) {
+        var b = document.createElement('span');
+        b.className = 'badge';
+        b.textContent = t;
+        badges.appendChild(b);
+      });
+      var actions = document.createElement('div');
+      actions.className = 'movie-actions';
+      var book = document.createElement('a');
+      book.href = 'book.html?film=' + film.key;
+      book.className = 'btn btn-primary';
+      book.textContent = 'Book';
+      var details = document.createElement('a');
+      details.href = 'movie.html?film=' + film.key;
+      details.className = 'btn btn-outline';
+      details.textContent = 'Details';
+      actions.appendChild(book); actions.appendChild(details);
+      body.appendChild(h); body.appendChild(meta); body.appendChild(desc); body.appendChild(badges); body.appendChild(actions);
+      card.appendChild(poster); card.appendChild(body);
+      grid.appendChild(card);
+    });
+  }
+
+  search.addEventListener('input', function () { state.q = search.value.trim(); render(); });
+  sortSel.addEventListener('change', function () { state.sort = sortSel.value; render(); });
+  tabNow.addEventListener('click', function () { state.tab = 'now'; tabNow.classList.add('selected'); tabComing.classList.remove('selected'); render(); });
+  tabComing.addEventListener('click', function () { state.tab = 'coming'; tabComing.classList.add('selected'); tabNow.classList.remove('selected'); render(); });
+
+  tabNow.classList.add('selected');
+  render();
+});
+</script>
 </body>
-</html>
+</html>
