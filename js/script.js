@@ -57,6 +57,33 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!theme) theme = 'light';
     applyTheme(theme);
   });
+
+  /* Language */
+  var langToggle = byId('langToggle');
+  function loadLang() {
+    return new Promise(function (resolve) {
+      try { resolve(localStorage.getItem('stubhouseLang') || null); } catch (err) { resolve(null); }
+    });
+  }
+  function saveLang(lang) {
+    return new Promise(function (resolve) { try { localStorage.setItem('stubhouseLang', lang); } catch (err) {} resolve(); });
+  }
+  loadLang().then(function (saved) {
+    var lang = saved;
+    if (!lang && window.navigator && window.navigator.language) {
+      var nl = window.navigator.language;
+      lang = nl.startsWith('ar') ? 'ar' : 'en';
+    }
+    if (!lang) lang = 'en';
+    if (langToggle) langToggle.value = lang;
+    stubhouseI18n.setLang(lang);
+  });
+  if (langToggle) {
+    langToggle.addEventListener('change', function () {
+      var next = langToggle.value;
+      saveLang(next).then(function () { stubhouseI18n.setLang(next); });
+    });
+  }
   if (themeToggle) {
     themeToggle.addEventListener('change', function () {
       var next = themeToggle.checked ? 'dark' : 'light';

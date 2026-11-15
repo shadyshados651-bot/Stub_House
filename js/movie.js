@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
       meta.textContent = hall.name + ' · ' + hall.format + ' · ' + show.subtitles + ' subtitles';
       var price = document.createElement('div');
       price.className = 'movie-meta';
-      price.textContent = stubhouseFormatPrice ? stubhouseFormatPrice(show.prices.adult) : ('EGP ' + show.prices.adult);
+      price.textContent = stubhouseI18n ? stubhouseI18n.formatPrice(show.prices.adult) : ('EGP ' + show.prices.adult);
       price.style.color = 'var(--gold)';
       price.style.fontWeight = '700';
       var btn = document.createElement('a');

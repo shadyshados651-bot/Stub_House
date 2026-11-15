@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var fees = STUBHOUSE_FEES;
   var SEAT_COUNT = STUBHOUSE_SEAT_COUNT;
   var seatCode = stubhouseSeatCode;
-  var formatPrice = stubhouseFormatPrice || function (v) { return new Intl.NumberFormat('en-EG', { style: 'currency', currency: 'EGP', minimumFractionDigits: 2 }).format(v || 0); };
+  var formatPrice = function (v) { return stubhouseI18n ? stubhouseI18n.formatPrice(v) : (stubhouseFormatPrice || function (x) { return new Intl.NumberFormat('en-EG', { style: 'currency', currency: 'EGP', minimumFractionDigits: 2 }).format(x || 0); })(v); };
   var MAX_SEATS = 8;
 
   /* ---------- State ---------- */

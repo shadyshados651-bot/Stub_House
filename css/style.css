@@ -1494,6 +1494,45 @@ footer ul li a:focus-visible {
   .footer-grid { grid-template-columns: 1fr; }
 }
 
+/* ---------- RTL mirroring ---------- */
+[dir="rtl"] .brand { flex-direction: row-reverse; }
+[dir="rtl"] .brand span { order: 0; }
+[dir="rtl"] .nav-links { gap: var(--spacing-lg); }
+[dir="rtl"] .dropdown { left: auto; right: 0; }
+[dir="rtl"] .has-dropdown:hover .dropdown { transform: translateY(0); }
+[dir="rtl"] .slider-arrow.prev { left: auto; right: var(--spacing-md); }
+[dir="rtl"] .slider-arrow.next { left: var(--spacing-md); right: auto; }
+[dir="rtl"] .slider-dots { left: var(--spacing-md); right: auto; }
+[dir="rtl"] .ticket-stub::before { left: auto; right: -17px; }
+[dir="rtl"] .ticket-stub::after { left: -17px; right: auto; }
+[dir="rtl"] .ticket-stub { transform: rotate(-3deg); }
+[dir="rtl"] .stub-row { direction: rtl; }
+[dir="rtl"] .stub-label, [dir="rtl"] .stub-value { direction: ltr; display: inline-block; }
+[dir="rtl"] .booking-summary { flex-direction: row-reverse; }
+[dir="rtl"] .order-line { justify-content: flex-start; }
+[dir="rtl"] .order-line-value { text-align: left; }
+[dir="rtl"] .bk-nav-row { flex-direction: row-reverse; }
+[dir="rtl"] .form-group label { text-align: right; }
+[dir="rtl"] .form-error { text-align: right; }
+[dir="rtl"] .cart-line-right { flex-direction: row-reverse; }
+[dir="rtl"] .payment-options { flex-direction: row-reverse; }
+[dir="rtl"] .footer-bottom { flex-direction: row-reverse; }
+[dir="rtl"] .footer-socials { flex-direction: row-reverse; }
+[dir="rtl"] .contact-info-item { flex-direction: row-reverse; }
+[dir="rtl"] .nav-toggle { margin-inline-start: auto; margin-inline-end: 0; }
+[dir="rtl"] .dropdown-btn { flex-direction: row-reverse; }
+[dir="rtl"] .accordion-button { flex-direction: row-reverse; }
+[dir="rtl"] .chips { flex-direction: row-reverse; }
+[dir="rtl"] .qty-stepper { flex-direction: row-reverse; }
+[dir="rtl"] .movie-actions { flex-direction: row-reverse; }
+[dir="rtl"] .badges { flex-direction: row-reverse; }
+
+/* Seat map stays LTR so orientation remains understandable (T11) */
+[dir="rtl"] .seat-map, [dir="rtl"] .seat { direction: ltr; }
+
+html[dir="rtl"] { text-align: right; }
+body.rtl { text-align: right; }
+
 /* ---------- Dark-mode legacy overrides (kept for compat) ---------- */
 body.dark-mode {
   background: var(--bg);

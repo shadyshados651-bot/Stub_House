@@ -31,7 +31,13 @@
           <span class="theme-slider"></span>
         </label>
       </li>
-      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -143,6 +149,7 @@
 
 <script src="js/seed.js"></script>
 <script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
 <script src="js/vendor/qr.js"></script>
 <script>

@@ -22,25 +22,31 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html#hero">Home</a></li>
-      <li><a href="index.html#showing">Now Showing</a></li>
+      <li><a href="index.html#hero" data-i18n="nav_home">Home</a></li>
+      <li><a href="index.html#showing" data-i18n="nav_now_showing">Now Showing</a></li>
       <li class="has-dropdown" id="ticketsDropdown">
-        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true">Tickets</button>
+        <button type="button" class="dropdown-btn" aria-expanded="false" aria-haspopup="true" data-i18n="nav_tickets">Tickets</button>
         <ul class="dropdown">
           <li><a href="book.html">Book Seats</a></li>
           <li><a href="movies.html">Full Schedule</a></li>
           <li><a href="bookings.html">My Bookings</a></li>
         </ul>
       </li>
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#about" data-i18n="nav_about">About</a></li>
+      <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
       <li class="theme-toggle-item">
         <label class="theme-switch" for="themeToggle" aria-label="Toggle dark mode">
           <input type="checkbox" id="themeToggle">
           <span class="theme-slider"></span>
         </label>
       </li>
-      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+      <li class="lang-toggle-item">
+        <select id="langToggle" aria-label="Choose language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="ar" data-i18n="arabic">العربية</option>
+        </select>
+      </li>
+      <li><a href="signin.html" id="navAuthLink" data-i18n="nav_sign_in">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -48,13 +54,13 @@
 <header class="hero" id="hero">
   <div class="container">
     <div class="hero-text">
-      <span class="eyebrow">Skip the line</span>
-      <h1>Book your seat<br>before the <em>curtain</em> rises</h1>
-      <p class="lead">StubHouse gets you into the movies, gigs, and shows worth showing up for — pick your seat, grab your stub, walk straight in.</p>
-      <div class="btn-row">
-        <a href="#booking" class="btn btn-primary">View Showtimes</a>
-        <a href="#contact" class="btn btn-outline">Contact Us</a>
-      </div>
+    <span class="eyebrow" data-i18n="hero_skip">Skip the line</span>
+    <h1 data-i18n-html="true" data-i18n="hero_title">Book your seat<br>before the <em>curtain</em> rises</h1>
+    <p class="lead" data-i18n="hero_lead">StubHouse gets you into the movies, gigs, and shows worth showing up for — pick your seat, grab your stub, walk straight in.</p>
+    <div class="btn-row">
+      <a href="#booking" class="btn btn-primary" data-i18n="hero_view">View Showtimes</a>
+      <a href="#contact" class="btn btn-outline" data-i18n="hero_contact">Contact Us</a>
+    </div>
     </div>
     <div class="ticket-stub">
       <div class="stub-row">
@@ -369,19 +375,19 @@
         </div>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h4 data-i18n="footer_explore">Explore</h4>
         <ul>
-          <li><a href="index.html#showing">Now Showing</a></li>
-          <li><a href="movies.html">Full Schedule</a></li>
-          <li><a href="book.html">Book Seats</a></li>
+          <li><a href="index.html#showing" data-i18n="nav_now_showing">Now Showing</a></li>
+          <li><a href="movies.html" data-i18n="nav_schedule">Full Schedule</a></li>
+          <li><a href="book.html" data-i18n="nav_book">Book Seats</a></li>
         </ul>
       </div>
       <div>
-        <h4>Company</h4>
+        <h4 data-i18n="footer_company">Company</h4>
         <ul>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-          <li><a href="signin.html">Sign In</a></li>
+          <li><a href="index.html#about" data-i18n="nav_about">About</a></li>
+          <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="signin.html" data-i18n="nav_sign_in">Sign In</a></li>
         </ul>
       </div>
       <div>
@@ -401,6 +407,7 @@
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
 <script src="js/seed.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>
