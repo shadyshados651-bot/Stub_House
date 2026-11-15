@@ -6,6 +6,7 @@
 function formatPrice(egp) {
   return new Intl.NumberFormat('en-EG', { style: 'currency', currency: 'EGP', minimumFractionDigits: 2 }).format(egp || 0);
 }
+window.stubhouseFormatPrice = formatPrice;
 
 function stubhouseSeatCode(index) {
   var row = String.fromCharCode(65 + Math.floor(index / 10));
@@ -457,6 +458,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
           var barcode = document.createElement('div'); barcode.className = 'stub-barcode';
           stub.appendChild(barcode);
+
+          if (booking.ref) {
+            var ticketLink = document.createElement('a');
+            ticketLink.href = 'ticket.html?ref=' + encodeURIComponent(booking.ref);
+            ticketLink.className = 'btn btn-outline';
+            ticketLink.textContent = 'View Ticket';
+            ticketLink.style.cssText = 'margin-top:var(--spacing-md); display:inline-block; padding:8px 14px; font-size:0.8rem;';
+            stub.appendChild(ticketLink);
+          }
 
           bookingsList.appendChild(stub);
         });
