@@ -42,8 +42,10 @@ document.addEventListener('DOMContentLoaded', function () {
   function applyTheme(theme) {
     if (theme === 'dark') {
       document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-theme');
       if (themeToggle) themeToggle.checked = true;
     } else {
+      document.body.classList.add('light-theme');
       document.body.classList.remove('dark-mode');
       if (themeToggle) themeToggle.checked = false;
     }
