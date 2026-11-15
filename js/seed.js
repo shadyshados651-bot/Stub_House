@@ -269,6 +269,6 @@ var STUBHOUSE_MOVIE_INFO = {
       { name: 'Bassem Samra', role: 'Mahdy' },
       { name: 'Sawsan Badr', role: "Horeya's Mother" }
     ],
-    trailerId: null /* UNVERIFIED: cAqdap-Bvfk could not be confirmed as the official trailer; falls back to YouTube search */
+    trailerId: 'cAqdap-Bvfk' /* VERIFIED: official trailer per user confirmation */
   }
 };

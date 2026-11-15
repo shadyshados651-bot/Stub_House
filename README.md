@@ -149,16 +149,23 @@ Two posters are low-resolution source files (Turab El Mas 315×420, Ibrahim El A
   (T1–T15) could not be executed here. Verify in a real browser: console errors,
   double-booking refusal, hold expiry, card/wallet/cash flows, XSS probe, mobile menu
   at 360px, keyboard-only booking, RTL layout, contrast.
-- Contact phone/address are format-corrected (+20, "12 El Korba, Heliopolis") but the
-  **real values must be confirmed** — do not publish without verifying.
-- Ibrahim El Abyad trailer ID is unverified → falls back to YouTube search.
+- Contact phone/address **confirmed**: +201030761946, "12 El Korba, Heliopolis, Cairo".
+- Ibrahim El Abyad trailer ID **confirmed**: `cAqdap-Bvfk`.
 - Trailer IDs for the other three films were verified against official sources.
 - Cast roles for Turab El Mas corrected against Wikipedia/elcinema/cineamo; two
   unverified entries removed.
-- Social links (IG/X) are clearly-marked placeholders; no GitHub link.
+- **Social links (IG/X) are still placeholders** — no real social URLs were provided;
+  replace `https://www.instagram.com/stubhouse/` in each footer before launch.
 - VAT/service fees are demo values (5 EGP fee, 5% tax); confirm before launch.
 - Loyalty points, gift cards, rotating QR, ticket transfer/resale are NOT built
   (see Phase 22 optional features — pros/cons with backend requirements pending).
+
+## Deployment
+
+This is a static site — no build step. Deploy any folder to Vercel, Netlify, GitHub
+Pages, or a simple static host. The site works from `file://` too, but a static server
+is recommended (service-worker-style features and deep links like `ticket.html?ref=...`
+work best over HTTP).
 
 ## Production note (payments)
 
