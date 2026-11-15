@@ -15,7 +15,8 @@
     holds: 'stubhouseHolds',
     theme: 'stubhouseTheme',
     watchlist: 'stubhouseWatchlist',
-    promos: 'stubhousePromos'
+    promos: 'stubhousePromos',
+    reviews: 'stubhouseReviews'
   };
 
   var SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -363,6 +364,50 @@
     });
   }
 
+  /* ---------- Reviews (F16) ---------- */
+  function getReviews() {
+    return read(KEYS.reviews, []);
+  }
+
+  function getReviewsForFilm(filmKey) {
+    return getReviews().then(function (list) {
+      return list.filter(function (r) { return r.filmKey === filmKey; });
+    });
+  }
+
+  function userHasConfirmedBooking(email, filmKey) {
+    return getBookings().then(function (bookings) {
+      return bookings.some(function (b) {
+        var be = (b.contact && b.contact.email) || b.userEmail;
+        return be === email && b.filmKey === filmKey && b.status === 'confirmed';
+      });
+    });
+  }
+
+  function addReview(review) {
+    return getCurrentUser().then(function (user) {
+      if (!user) return Promise.reject(new Error('Sign in to leave a review.'));
+      return userHasConfirmedBooking(user.email, review.filmKey).then(function (eligible) {
+        if (!eligible) return Promise.reject(new Error('You can only review films you have seen (confirmed booking).'));
+        return getReviews().then(function (list) {
+          var idx = list.findIndex(function (r) { return r.filmKey === review.filmKey && r.userEmail === user.email; });
+          if (idx !== -1) list.splice(idx, 1);
+          list.push({
+            filmKey: review.filmKey,
+            userEmail: user.email,
+            userName: user.name,
+            rating: review.rating,
+            dimensions: review.dimensions,
+            text: review.text,
+            createdAt: new Date().toISOString(),
+            verified: true
+          });
+          return write(KEYS.reviews, list).then(function () { return list; });
+        });
+      });
+    });
+  }
+
   window.stubhouseApi = {
     getAccounts: getAccounts,
     saveAccounts: saveAccounts,
@@ -387,6 +432,9 @@
     validatePromo: validatePromo,
     getWatchlist: getWatchlist,
     toggleWatchlist: toggleWatchlist,
+    getReviewsForFilm: getReviewsForFilm,
+    addReview: addReview,
+    userHasConfirmedBooking: userHasConfirmedBooking,
     HOLD_MINUTES: HOLD_MINUTES
   };
 

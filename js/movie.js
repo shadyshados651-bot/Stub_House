@@ -264,14 +264,121 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = 'hidden';
   }
 
-  if (window.location.hash === '#trailer') {
-    if (info.trailerId) {
-      openTrailer();
-      history.replaceState(null, '', window.location.pathname + window.location.search);
-    } else {
-      openTrailer();
-      history.replaceState(null, '', window.location.pathname + window.location.search);
+  /* ---------- Reviews (F16) ---------- */
+  var reviewsForm = byId('mvReviewsForm');
+  var reviewsList = byId('mvReviewsList');
+  var currentUser = null;
+
+  function renderReviews() {
+    stubhouseApi.getReviewsForFilm(key).then(function (list) {
+      reviewsList.innerHTML = '';
+      list.sort(function (a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+      if (list.length === 0) {
+        reviewsList.innerHTML = '<p style="color:var(--muted); grid-column:1/-1; text-align:center;">No reviews yet.</p>';
+        return;
+      }
+      list.forEach(function (r) {
+        var card = document.createElement('div');
+        card.className = 'cast-card';
+        card.style.cssText = 'flex:1 1 30%; min-width:240px;';
+        var head = document.createElement('div');
+        head.style.cssText = 'display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;';
+        var name = document.createElement('strong');
+        name.textContent = r.userName;
+        var badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = r.verified ? 'Verified viewer' : 'Viewer';
+        head.appendChild(name); head.appendChild(badge);
+        var stars = document.createElement('div');
+        stars.className = 'movie-meta';
+        stars.style.color = 'var(--gold)';
+        stars.style.fontFamily = 'var(--font-mono)';
+        stars.textContent = '★ ' + r.rating + '   (' + Object.keys(r.dimensions || {}).map(function (d) { return d + ':' + r.dimensions[d]; }).join(', ') + ')';
+        var text = document.createElement('p');
+        text.textContent = r.text;
+        text.style.marginTop = '6px';
+        card.appendChild(head); card.appendChild(stars); card.appendChild(text);
+        reviewsList.appendChild(card);
+      });
+    });
+  }
+
+  function buildReviewForm(eligible) {
+    reviewsForm.innerHTML = '';
+    if (!eligible) {
+      var note = document.createElement('p');
+      note.textContent = currentUser ? 'You can review this film after a confirmed booking.' : 'Sign in with a confirmed booking to leave a review.';
+      note.style.color = 'var(--muted)';
+      note.style.fontSize = '0.85rem';
+      reviewsForm.appendChild(note);
+      return;
     }
+    var h = document.createElement('h3');
+    h.textContent = 'Your Review';
+    h.style.marginBottom = 'var(--spacing-md)';
+    reviewsForm.appendChild(h);
+    var dims = { picture: 'Picture', sound: 'Sound', seat: 'Seat comfort', clean: 'Cleanliness' };
+    var dimEls = {};
+    Object.keys(dims).forEach(function (d) {
+      var lab = document.createElement('label');
+      lab.textContent = dims[d];
+      lab.style.cssText = 'display:block; font-size:0.8rem; font-family:var(--font-mono); color:var(--muted); margin-top:8px;';
+      var sel = document.createElement('select');
+      sel.style.cssText = 'width:100%; padding:8px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text); margin-top:4px;';
+      for (var s = 1; s <= 5; s++) { var o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); }
+      sel.value = 5;
+      lab.appendChild(sel);
+      reviewsForm.appendChild(lab);
+      dimEls[d] = sel;
+    });
+    var overall = document.createElement('label');
+    overall.textContent = 'Overall rating';
+    overall.style.cssText = 'display:block; font-size:0.8rem; font-family:var(--font-mono); color:var(--muted); margin-top:12px;';
+    var ov = document.createElement('select');
+    ov.style.cssText = 'width:100%; padding:8px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text); margin-top:4px;';
+    for (var s = 1; s <= 5; s++) { var oo = document.createElement('option'); oo.value = s; oo.textContent = s; ov.appendChild(oo); }
+    ov.value = 5;
+    overall.appendChild(ov);
+    reviewsForm.appendChild(overall);
+    var ta = document.createElement('textarea');
+    ta.placeholder = 'What did you think?';
+    ta.rows = 3;
+    ta.style.cssText = 'width:100%; padding:8px; border-radius:var(--radius); border:2px solid var(--border-color); background:var(--surface); color:var(--text); margin-top:8px; font-family:var(--font-body);';
+    reviewsForm.appendChild(ta);
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-primary';
+    btn.textContent = 'Submit Review';
+    btn.style.marginTop = 'var(--spacing-md)';
+    btn.addEventListener('click', function () {
+      var dimensions = {};
+      Object.keys(dimEls).forEach(function (d) { dimensions[d] = Number(dimEls[d].value); });
+      var text = ta.value.trim();
+      if (!text) { showToast('Please write a review.', 'error'); return; }
+      stubhouseApi.addReview({ filmKey: key, rating: Number(ov.value), dimensions: dimensions, text: text }).then(function () {
+        showToast('Review submitted.', 'success');
+        reviewsForm.innerHTML = '';
+        renderReviews();
+      }).catch(function (err) { showToast(err.message, 'error'); });
+    });
+    reviewsForm.appendChild(btn);
+  }
+
+  stubhouseApi.getCurrentUser().then(function (u) {
+    currentUser = u;
+    if (u) {
+      stubhouseApi.userHasConfirmedBooking(u.email, key).then(function (eligible) {
+        buildReviewForm(eligible);
+      });
+    } else {
+      buildReviewForm(false);
+    }
+  });
+  renderReviews();
+
+  if (window.location.hash === '#trailer') {
+    openTrailer();
+    history.replaceState(null, '', window.location.pathname + window.location.search);
   }
 
   trailerBtn.addEventListener('click', function () {
