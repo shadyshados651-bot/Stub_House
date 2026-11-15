@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Seats — StubHouse</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/book.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="index.html#showing">Now Showing</a></li>
+      <li class="has-dropdown" id="ticketsDropdown">
+        <a href="javascript:void(0)">Tickets</a>
+        <ul class="dropdown">
+          <li><a href="book.html">Book Seats</a></li>
+          <li><a href="movies.html">Full Schedule</a></li>
+          <li><a href="bookings.html">My Bookings</a></li>
+        </ul>
+      </li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li class="theme-toggle-item">
+        <label class="theme-switch" for="themeToggle" aria-label="Toggle dark mode">
+          <input type="checkbox" id="themeToggle">
+          <span class="theme-slider"></span>
+        </label>
+      </li>
+      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Book your night</span>
+    <h1>Seats, snacks, done</h1>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Progress steps -->
+    <ol class="bk-steps" id="bkSteps">
+      <li class="active" data-step="1"><span class="bk-step-num">1</span><span class="bk-step-name">Seats</span></li>
+      <li data-step="2"><span class="bk-step-num">2</span><span class="bk-step-name">Snacks</span></li>
+      <li data-step="3"><span class="bk-step-num">3</span><span class="bk-step-name">Checkout</span></li>
+    </ol>
+
+    <!-- STEP 1 — SEATS -->
+    <div class="booking-panel bk-panel active" id="stepSeats">
+      <div class="film-select-row">
+        <label for="bkFilmSelect">Choose your film</label>
+        <select id="bkFilmSelect">
+          <option value="interstellar">Interstellar — 8:45 PM</option>
+          <option value="12angrymen">12 Angry Men — 6:30 PM</option>
+          <option value="turabelmas">Turab El Mas — 9:15 PM</option>
+          <option value="ibrahimelabyad">Ibrahim El Abyad — 10:00 PM</option>
+        </select>
+        <p class="bk-film-info" id="bkFilmInfo"></p>
+      </div>
+
+      <div class="screen-label">Screen faces this way</div>
+      <div class="screen"></div>
+      <div class="seat-map" id="bkSeatMap"></div>
+      <div class="seat-legend">
+        <span><span class="legend-dot" style="background:var(--seat-free)"></span> Available</span>
+        <span><span class="legend-dot" style="background:var(--seat-taken)"></span> Taken</span>
+        <span><span class="legend-dot" style="background:var(--seat-selected)"></span> Selected</span>
+      </div>
+
+      <div class="booking-summary">
+        <div>
+          <span class="stub-label">Selected seats</span>
+          <span class="stub-value" id="bkSelectedSeats">None</span>
+        </div>
+        <div class="summary-total">Tickets: $<span id="bkSeatTotal">0</span>.00</div>
+        <button type="button" class="btn btn-primary" id="toSnacks" disabled>Continue to Snacks</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — SNACKS -->
+    <div class="bk-panel" id="stepSnacks">
+      <h2 class="section-title">Grab Some Snacks</h2>
+      <p class="section-sub">Totally optional. Pick a type and a size, add it to your order, and skip ahead whenever you're ready.</p>
+
+      <div class="snack-grid">
+
+        <!-- POPCORN CARD — put your photo at images/popcorn.jpg, or change the src below -->
+        <article class="snack-card" id="popcornCard">
+          <div class="snack-photo">
+            <span class="snack-photo-label">Popcorn photo</span>
+            <img src="images/—Pngtree—cola soda ice glass_23520376.png" alt="Popcorn" onerror="this.remove()">
+          </div>
+          <div class="snack-body">
+            <h3>Popcorn</h3>
+            <div class="form-group">
+              <label for="popcornType">Type</label>
+              <select id="popcornType">
+                <option value="Salted">Salted</option>
+                <option value="Butter">Butter</option>
+                <option value="Caramel">Caramel</option>
+                <option value="Cheese">Cheese</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="popcornSize">Size</label>
+              <select id="popcornSize">
+                <option value="Small" data-price="4">Small — $4</option>
+                <option value="Medium" data-price="6" selected>Medium — $6</option>
+                <option value="Large" data-price="8">Large — $8</option>
+              </select>
+            </div>
+            <div class="snack-action-row">
+              <div class="qty-stepper" aria-label="Popcorn quantity">
+                <button type="button" class="qty-btn" data-item="popcorn" data-delta="-1" aria-label="Fewer">−</button>
+                <span class="qty-value" id="popcornQty">1</span>
+                <button type="button" class="qty-btn" data-item="popcorn" data-delta="1" aria-label="More">+</button>
+              </div>
+              <span class="snack-line-price" id="popcornPrice">$6.00</span>
+            </div>
+            <button type="button" class="btn btn-primary snack-add" data-item="popcorn">Add to Order</button>
+          </div>
+        </article>
+
+        <!-- SOFT DRINK CARD — put your photo at soft-drink.jpg (same folder), or change the src below -->
+        <article class="snack-card" id="drinkCard">
+          <div class="snack-photo">
+            <span class="snack-photo-label">Soft drink photo</span>
+            <img src="images/—Pngtree—watch movie popcorn maker snack_18726224.png" alt="Soft drink" onerror="this.remove()">
+          </div>
+          <div class="snack-body">
+            <h3>Soft Drink</h3>
+            <div class="form-group">
+              <label for="drinkType">Type</label>
+              <select id="drinkType">
+                <option value="Cola">Cola</option>
+                <option value="Lemon-Lime">Lemon-Lime</option>
+                <option value="Orange">Orange</option>
+                <option value="Iced Tea">Iced Tea</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="drinkSize">Size</label>
+              <select id="drinkSize">
+                <option value="Small" data-price="2">Small — $2</option>
+                <option value="Medium" data-price="3" selected>Medium — $3</option>
+                <option value="Large" data-price="4">Large — $4</option>
+              </select>
+            </div>
+            <div class="snack-action-row">
+              <div class="qty-stepper" aria-label="Drink quantity">
+                <button type="button" class="qty-btn" data-item="drink" data-delta="-1" aria-label="Fewer">−</button>
+                <span class="qty-value" id="drinkQty">1</span>
+                <button type="button" class="qty-btn" data-item="drink" data-delta="1" aria-label="More">+</button>
+              </div>
+              <span class="snack-line-price" id="drinkPrice">$3.00</span>
+            </div>
+            <button type="button" class="btn btn-primary snack-add" data-item="drink">Add to Order</button>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="snack-cart">
+        <span class="stub-label">Your snacks</span>
+        <ul class="snack-cart-list" id="snackCart"></ul>
+      </div>
+
+      <div class="bk-nav-row">
+        <button type="button" class="btn btn-outline" id="backToSeats">Back to Seats</button>
+        <button type="button" class="btn btn-primary" id="toCheckout">Continue to Checkout</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 — CHECKOUT -->
+    <div class="booking-panel bk-panel" id="stepCheckout">
+      <h2 class="bk-checkout-title">Order Summary</h2>
+      <div class="order-lines" id="orderLines"></div>
+      <div class="order-total">
+        <span>Total</span>
+        <span>$<span id="orderTotal">0</span>.00</span>
+      </div>
+
+      <div class="auth-notice" id="authNotice" hidden>
+        <p><strong>Sign in to complete your purchase.</strong> Your seats and snacks are saved — you'll come straight back here after signing in.</p>
+        <a href="signin.html?next=book.html" class="btn btn-primary" id="signInToPay">Sign In to Pay</a>
+      </div>
+      <p class="signed-in-note" id="signedInNote" hidden></p>
+
+      <div class="payment-row">
+        <span class="stub-label">Payment method</span>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="bkPayment" value="cash" checked>
+            <span>Cash at counter</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="bkPayment" value="visa">
+            <span>Visa card</span>
+          </label>
+        </div>
+        <div class="visa-fields" id="bkVisaFields">
+          <div class="form-group">
+            <label for="payCardNumber">Card Number</label>
+            <input type="text" id="payCardNumber" maxlength="19" placeholder="4111 1111 1111 1111">
+            <span class="form-error" id="payCardNumberError">Enter a valid 16-digit card number.</span>
+          </div>
+          <div class="form-group">
+            <label for="payExpiry">Expiry (MM/YY)</label>
+            <input type="text" id="payExpiry" maxlength="5" placeholder="08/29">
+            <span class="form-error" id="payExpiryError">Enter a valid expiry date.</span>
+          </div>
+          <div class="form-group">
+            <label for="payCvv">CVV</label>
+            <input type="text" id="payCvv" maxlength="3" placeholder="123">
+            <span class="form-error" id="payCvvError">Enter a valid 3-digit CVV.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bk-nav-row">
+        <button type="button" class="btn btn-outline" id="backToSnacks">Back to Snacks</button>
+        <button type="button" class="btn btn-primary" id="confirmPay" disabled>Confirm &amp; Pay</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+        <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="X">X</a>
+          <a href="#" aria-label="GitHub">GH</a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#showing">Now Showing</a></li>
+          <li><a href="movies.html">Full Schedule</a></li>
+          <li><a href="book.html">Book Seats</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="bookings.html">My Bookings</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay in the loop</h4>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="you@email.com" id="newsletterEmail" required>
+          <button type="submit">Join</button>
+        </form>
+        <div class="newsletter-msg" id="newsletterMsg">You're on the list!</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+      <span>Built with vanilla HTML, CSS &amp; JS</span>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<!-- script.js first (nav, theme, shared film data), then this page's own script -->
+<script src="js/script.js"></script>
+<script src="js/book.js"></script>
+</body>
+</html>

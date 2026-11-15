@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StubHouse — Book Your Show</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand"><span>Stub</span>House</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+     
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="index.html#showing">Now Showing</a></li>
+      <li class="has-dropdown" id="ticketsDropdown">
+        <a href="javascript:void(0)">Tickets</a>
+        <ul class="dropdown">
+          <li><a href="book.html">Book Seats</a></li>
+          <li><a href="movies.html">Full Schedule</a></li>
+          <li><a href="bookings.html">My Bookings</a></li>
+        </ul>
+      </li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li class="theme-toggle-item">
+        <label class="theme-switch" for="themeToggle" aria-label="Toggle dark mode">
+          <input type="checkbox" id="themeToggle">
+          <span class="theme-slider"></span>
+        </label>
+      </li>
+      <li><a href="signin.html" id="navAuthLink">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="container">
+    <div class="hero-text">
+      <span class="eyebrow">Skip the line</span>
+      <h1>Book your seat<br>before the <em>curtain</em> rises</h1>
+      <p class="lead">StubHouse gets you into the movies, gigs, and shows worth showing up for — pick your seat, grab your stub, walk straight in.</p>
+      <div class="btn-row">
+        <a href="#booking" class="btn btn-primary">View Showtimes</a>
+        <a href="#contact" class="btn btn-outline">Contact Us</a>
+      </div>
+    </div>
+    <div class="ticket-stub">
+      <div class="stub-row">
+        <div>
+          <span class="stub-label">Feature</span>
+          <span class="stub-value">Interstellar</span>
+        </div>
+        <div>
+          <span class="stub-label">Screen</span>
+          <span class="stub-value">04</span>
+        </div>
+      </div>
+      <div class="stub-row">
+        <div>
+          <span class="stub-label">Date</span>
+          <span class="stub-value">Fri, 8:45 PM</span>
+        </div>
+        <div>
+          <span class="stub-label">Seat</span>
+          <span class="stub-value">G-12</span>
+        </div>
+      </div>
+      <div class="stub-row">
+        <div>
+          <span class="stub-label">Admit</span>
+          <span class="stub-value">One</span>
+        </div>
+        <div>
+          <span class="stub-label">Price</span>
+          <span class="stub-value">$14.00</span>
+        </div>
+      </div>
+      <div class="stub-barcode"></div>
+    </div>
+  </div>
+</header>
+
+<div class="tear-divider">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0,20 Q15,5 30,20 T60,20 T90,20 T120,20 T150,20 T180,20 T210,20 T240,20 T270,20 T300,20 T330,20 T360,20 T390,20 T420,20 T450,20 T480,20 T510,20 T540,20 T570,20 T600,20 T630,20 T660,20 T690,20 T720,20 T750,20 T780,20 T810,20 T840,20 T870,20 T900,20 T930,20 T960,20 T990,20 T1020,20 T1050,20 T1080,20 T1110,20 T1140,20 T1170,20 T1200,20" fill="none" stroke="#161312" stroke-width="2" opacity="0.15"/></svg>
+</div>
+
+<section class="section" id="showing">
+  <div class="container">
+    <h2 class="section-title">Now Showing</h2>
+    <p class="section-sub">Four picks from this week's lineup — swipe through and find your next night out.</p>
+    <div class="slider-wrap">
+      <div class="slides" id="slides">
+        <div class="slide active">
+          <img src="images/interstellar.jpg" alt="Interstellar poster" onerror="this.style.background='#e8412c'">
+          <div class="slide-caption"><h3>Interstellar</h3><p>Sci-Fi · 2h 49m · Screen 04</p></div>
+        </div>
+        <div class="slide">
+          <img src="images/12angrymen.jpg" alt="12 Angry Men poster" onerror="this.style.background='#2f6f4e'">
+          <div class="slide-caption"><h3>12 Angry Men</h3><p>Drama · 1h 36m · Screen 02</p></div>
+        </div>
+        <div class="slide">
+          <img src="images/turab-el-mas.jpg" alt="Turab El Mas poster" onerror="this.style.background='#d4a24e'">
+          <div class="slide-caption"><h3>Turab El Mas</h3><p>Drama · 2h 05m · Screen 07</p></div>
+        </div>
+        <div class="slide">
+          <img src="images/ibrahim-el-abyad.jpg" alt="Ibrahim El Abyad poster" onerror="this.style.background='#8a1f1f'">
+          <div class="slide-caption"><h3>Ibrahim El Abyad</h3><p>Action · 2h 10m · Screen 01</p></div>
+        </div>
+      </div>
+      <button class="slider-arrow prev" id="prevSlide" aria-label="Previous slide">‹</button>
+      <button class="slider-arrow next" id="nextSlide" aria-label="Next slide">›</button>
+      <div class="slider-dots" id="sliderDots"></div>
+    </div>
+  </div>
+</section>
+
+<section class="info-section">
+  <div class="info-bg-top"></div>
+  <div class="info-bg-bottom"></div>
+  <div class="container info-content">
+    <h2>How it works</h2>
+    <div class="info-cols">
+      <div class="info-col">
+        <span class="info-num">01</span>
+        <h3>Pick a show</h3>
+        <p>Browse this week's films and events, filtered by day, time, and screen.</p>
+      </div>
+      <div class="info-col">
+        <span class="info-num">02</span>
+        <h3>Choose your seat</h3>
+        <p>Tap the seat map to hold your spot — taken seats are grayed out in real time.</p>
+      </div>
+      <div class="info-col">
+        <span class="info-num">03</span>
+        <h3>Get your stub</h3>
+        <p>Confirm and receive a digital ticket stub with your seat, time, and barcode.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container about-grid">
+    <div>
+      <span class="eyebrow">About StubHouse</span>
+      <h2 style="font-size:2.6rem; margin: 10px 0 16px;">Built by people who hate missing the opening scene</h2>
+      <p>StubHouse started as a weekend project between four friends tired of paper box-office lines. Today it handles seat selection, showtimes, and digital stubs for independent cinemas and small venues.</p>
+      <p>No app download, no account wall to browse — just pick a seat and go.</p>
+    </div>
+    <div>
+      <h3 class="section-title" style="text-align:left; font-size:1.8rem;">Most Watched</h3>
+      <div class="skill">
+        <div class="skill-label"><span>Interstellar</span><span>96%</span></div>
+        <div class="progress"><div class="progress-bar" style="width:96%"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-label"><span>Ibrahim El Abyad</span><span>88%</span></div>
+        <div class="progress"><div class="progress-bar" style="width:88%"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-label"><span>Turab El Mas</span><span>81%</span></div>
+        <div class="progress"><div class="progress-bar" style="width:81%"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-label"><span>12 Angry Men</span><span>74%</span></div>
+        <div class="progress"><div class="progress-bar" style="width:74%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--paper-dim);">
+  <div class="container">
+    <h2 class="section-title">This Week's Lineup</h2>
+    <p class="section-sub">Four titles currently booking seats — pick one to open its seat map below.</p>
+    <div class="movie-grid">
+      <div class="movie-card">
+        <div class="movie-poster"><img src="images/interstellar.jpg" alt="Interstellar poster" onerror="this.remove()"></div>
+        <div class="movie-body">
+          <h3>Interstellar</h3>
+          <div class="movie-meta">SCI-FI · 2H 49M</div>
+          <p class="desc">A crew of explorers travels through a wormhole in search of a new home for humanity.</p>
+          <div class="badges"><span class="badge">Screen 04</span><span class="badge">8:45 PM</span><span class="badge">PG-13</span></div>
+          <div class="movie-actions">
+            <a href="book.html?film=interstellar" class="btn btn-primary">Book</a>
+            <a href="movie.html?film=interstellar" class="btn btn-outline">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="movie-card">
+        <div class="movie-poster"><img src="images/12angrymen.jpg" alt="12 Angry Men poster" onerror="this.remove()"></div>
+        <div class="movie-body">
+          <h3>12 Angry Men</h3>
+          <div class="movie-meta">DRAMA · 1H 36M</div>
+          <p class="desc">A lone juror tries to convince eleven others to reconsider the evidence before condemning a young man.</p>
+          <div class="badges"><span class="badge">Screen 02</span><span class="badge">6:30 PM</span><span class="badge">PG</span></div>
+          <div class="movie-actions">
+            <a href="book.html?film=12angrymen" class="btn btn-primary">Book</a>
+            <a href="movie.html?film=12angrymen" class="btn btn-outline">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="movie-card">
+        <div class="movie-poster"><img src="images/turab-el-mas.jpg" alt="Turab El Mas poster" onerror="this.remove()"></div>
+        <div class="movie-body">
+          <h3>Turab El Mas</h3>
+          <div class="movie-meta">DRAMA · 2H 5M</div>
+          <p class="desc">Ambition and rivalry collide as one man claws his way through a business empire built on diamonds.</p>
+          <div class="badges"><span class="badge">Screen 07</span><span class="badge">9:15 PM</span><span class="badge">PG-13</span></div>
+          <div class="movie-actions">
+            <a href="book.html?film=turabelmas" class="btn btn-primary">Book</a>
+            <a href="movie.html?film=turabelmas" class="btn btn-outline">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="movie-card">
+        <div class="movie-poster"><img src="images/ibrahim-el-abyad.jpg" alt="Ibrahim El Abyad poster" onerror="this.remove()"></div>
+        <div class="movie-body">
+          <h3>Ibrahim El Abyad</h3>
+          <div class="movie-meta">ACTION · 2H 10M</div>
+          <p class="desc">A man returns from prison determined to protect his family and reclaim his place on the streets.</p>
+          <div class="badges"><span class="badge">Screen 01</span><span class="badge">10:00 PM</span><span class="badge">R</span></div>
+          <div class="movie-actions">
+            <a href="book.html?film=ibrahimelabyad" class="btn btn-primary">Book</a>
+            <a href="movie.html?film=ibrahimelabyad" class="btn btn-outline">Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="booking">
+  <div class="container">
+    <h2 class="section-title">Seat Availability</h2>
+    <p class="section-sub">Green is open, gray is taken. Pick a film to see how many seats are left, then head to the booking page to reserve yours.</p>
+    <div class="booking-panel">
+      <div class="film-select-row">
+        <label for="filmSelect">Choose your film</label>
+        <select id="filmSelect">
+          <option value="interstellar">Interstellar — 8:45 PM</option>
+          <option value="12angrymen">12 Angry Men — 6:30 PM</option>
+          <option value="turabelmas">Turab El Mas — 9:15 PM</option>
+          <option value="ibrahimelabyad">Ibrahim El Abyad — 10:00 PM</option>
+        </select>
+      </div>
+      <div class="screen-label">Screen faces this way</div>
+      <div class="screen"></div>
+      <div class="seat-map seat-map-readonly" id="seatMap" aria-label="Seat availability map"></div>
+      <div class="seat-legend">
+        <span><span class="legend-dot" style="background:var(--seat-free)"></span> Available</span>
+        <span><span class="legend-dot" style="background:var(--seat-taken)"></span> Taken</span>
+      </div>
+      <div class="booking-summary">
+        <div>
+          <span class="stub-label">Available seats</span>
+          <span class="stub-value"><span id="availableCount">0</span> of <span id="totalSeats">60</span></span>
+        </div>
+        <a href="book.html?film=interstellar" class="btn btn-primary" id="bookSeatsLink">Book Seats</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="container contact-grid">
+    <div>
+      <span class="eyebrow">Get in touch</span>
+      <h2 style="font-size:2.6rem; margin:10px 0 20px;">Questions before showtime?</h2>
+      <div class="contact-info-item">
+        <div class="contact-icon">@</div>
+        <div><strong>Email</strong><p>stubhouse@gmail.com</p></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">#</div>
+        <div><strong>Phone</strong><p>+02 115 986 2790</p></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">◎</div>
+        <div><strong>Venue</strong><p>12 ELKorba,Heliopolis</p></div>
+      </div>
+    </div>
+    <div>
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="cName">Your Name</label>
+          <input type="text" id="cName" name="cName">
+          <span class="form-error" id="cNameError">Please enter your name.</span>
+        </div>
+        <div class="form-group">
+          <label for="cEmail">Your Email</label>
+          <input type="email" id="cEmail" name="cEmail">
+          <span class="form-error" id="cEmailError">Please enter a valid email.</span>
+        </div>
+        <div class="form-group">
+          <label for="cMessage">Message</label>
+          <textarea id="cMessage" name="cMessage" rows="5"></textarea>
+          <span class="form-error" id="cMessageError">Message can't be empty.</span>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+        <div class="form-success" id="contactSuccess">Thanks — we'll get back to you shortly.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand">{ }<span>Stub</span>House</a>
+        <p style="margin-top:12px; color:#cfc7bb; font-size:0.9rem;">Your seat, held and ready.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="X">X</a>
+          <a href="#" aria-label="GitHub">GH</a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#showing">Now Showing</a></li>
+          <li><a href="movies.html">Full Schedule</a></li>
+          <li><a href="book.html">Book Seats</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="signin.html">Sign In</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay in the loop</h4>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="you@email.com" id="newsletterEmail" required>
+          <button type="submit">Join</button>
+        </form>
+        <div class="newsletter-msg" id="newsletterMsg">You're on the list!</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+      <span>Built with vanilla HTML, CSS &amp; JS</span>
+    </div>
+  </div>
+</footer>
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="js/script.js"></script>
+</body>
+</html>
